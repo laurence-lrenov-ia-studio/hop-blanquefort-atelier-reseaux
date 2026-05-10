@@ -5,78 +5,514 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HOP! Blanquefort · Boost LinkedIn</title>
 <style>
-:root{--navy:#101a3a;--navy2:#142757;--blue:#0096d6;--blue2:#0077b5;--cream:#f4efe7;--ink:#07152f;--muted:#69758a;--border:#d7e0ee;--green:#16a34a;--orange:#f59e0b;--red:#dc2626}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,Helvetica,sans-serif;padding-bottom:58px}
-.hero{margin:0 auto;max-width:1280px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;border-radius:0 0 34px 34px;padding:34px 34px 32px;position:relative;overflow:hidden;box-shadow:0 18px 42px rgba(7,21,47,.16)}
-.hero::after{content:"";position:absolute;right:-70px;top:-115px;width:330px;height:330px;border-radius:50%;background:rgba(0,150,214,.18)}
-.hero-top{position:relative;z-index:2;display:grid;grid-template-columns:92px 1fr;gap:22px;align-items:start}
-.logo-box{width:84px;height:84px;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center}
-.logo-box img{width:100%;height:100%;object-fit:cover}.logo-fallback{font-size:11px;text-align:center;color:rgba(255,255,255,.72);padding:8px}
-.kicker{color:#57d3ff;font-weight:900;letter-spacing:.28em;font-size:12px;text-transform:uppercase;margin:0 0 10px}
-h1{margin:0;font-size:clamp(44px,7vw,90px);line-height:.94;letter-spacing:.06em;text-transform:uppercase;font-weight:900}h1 span{color:#57d3ff}
-.hero p{max-width:880px;color:rgba(255,255,255,.84);font-size:20px;line-height:1.55;margin:20px 0 0}
-.steps-nav{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
-.step-tab{border:1px solid rgba(255,255,255,.22);color:white;background:rgba(255,255,255,.09);border-radius:999px;padding:14px 26px;font-weight:900;font-size:17px;cursor:pointer}
-.step-tab.active{background:var(--blue);border-color:var(--blue)}
-main{max-width:1280px;margin:0 auto;padding:24px 34px 80px}.screen{display:none}.screen.active{display:block}
-.two-col{display:grid;grid-template-columns:minmax(360px,.92fr) minmax(420px,1.08fr);gap:24px}
-@media(max-width:900px){.hero{padding:22px 18px 28px}.hero-top{grid-template-columns:1fr}.logo-box{width:74px;height:74px}main{padding:18px 14px 80px}.two-col{grid-template-columns:1fr}}
-.card{background:white;border:1px solid var(--border);border-radius:26px;padding:28px;box-shadow:0 14px 36px rgba(7,21,47,.08)}
-.card h2{margin:0 0 16px;text-transform:uppercase;font-size:38px;line-height:1;letter-spacing:.04em}.card p{color:var(--muted);line-height:1.65;font-size:18px;margin:0 0 18px}
-label{display:block;text-transform:uppercase;color:#64748b;font-size:12px;font-weight:900;letter-spacing:.18em;margin:18px 0 8px}
-select,input,textarea{width:100%;border:1px solid var(--border);border-radius:15px;padding:15px 16px;font-size:17px;background:white;color:var(--ink);font-family:inherit}textarea{min-height:90px;resize:vertical}
-.btn{border:0;border-radius:15px;padding:15px 20px;font-weight:900;font-size:15px;cursor:pointer;background:var(--blue);color:white;margin:10px 10px 0 0;text-transform:uppercase;letter-spacing:.03em}.btn.dark{background:var(--navy)}.btn.light{background:#eef7ff;color:var(--navy);border:1px solid #c9e7fb}.btn.green{background:var(--green)}.btn.danger{background:var(--red)}.btn:disabled{opacity:.5;cursor:not-allowed}
-.profile-card{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center;background:#f7fbff;border:1px solid #ccecff;border-radius:18px;padding:16px;margin:16px 0}
-.avatar{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,var(--blue2),var(--blue));color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px}
-.profile-name{font-weight:900;font-size:23px}.profile-job{color:var(--muted);margin-top:4px}
-.info-box{background:#eff8ff;border:1px solid #b9e6fe;border-radius:18px;padding:16px 18px;color:#075985;line-height:1.6;margin-top:18px}.warn-box{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:18px;padding:14px 16px;line-height:1.5;margin-top:14px}
-.qr-zone{min-height:410px;border:2px dashed #cfe4f6;border-radius:24px;background:#fbfdff;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;color:#62748c}.qr-zone.has-qr{display:grid;grid-template-columns:220px 1fr;gap:20px;text-align:left;align-items:center}
-@media(max-width:640px){.qr-zone.has-qr{grid-template-columns:1fr;text-align:center}}#qrImage{width:220px;height:220px;border:10px solid white;border-radius:20px;box-shadow:0 10px 26px rgba(7,21,47,.12);background:white}.linkbox{word-break:break-all;background:white;border:1px solid var(--border);border-radius:14px;padding:14px;color:#475569;font-size:14px}
-.form-wrap{max-width:880px;margin:0 auto}.form-head{background:white;border:1px solid var(--border);border-radius:24px;padding:24px;margin-bottom:18px;box-shadow:0 12px 32px rgba(7,21,47,.08)}
-.q{background:white;border:1px solid var(--border);border-radius:22px;padding:20px;margin:16px 0;box-shadow:0 8px 24px rgba(7,21,47,.05)}.q h3{margin:0 0 8px;font-size:22px}.q p{margin:0 0 14px;color:var(--muted);line-height:1.5}
-.score-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}@media(max-width:760px){.score-row{grid-template-columns:1fr 1fr}}@media(max-width:420px){.score-row{grid-template-columns:1fr}}
-.choice,.action-choice{border:2px solid #e4e7ec;border-radius:14px;background:white;padding:13px 9px;min-height:78px;cursor:pointer;font-weight:900;text-align:center}.choice small,.action-choice small{display:block;color:var(--muted);font-weight:500;margin-top:5px;line-height:1.25}
-.choice.selected.top{border-color:var(--green);background:#dcfce7;color:#166534}.choice.selected.good{border-color:#84cc16;background:#ecfccb;color:#365314}.choice.selected.mid{border-color:var(--orange);background:#fef3c7;color:#92400e}.choice.selected.low{border-color:#fb7185;background:#ffe4e6;color:#9f1239}.choice.selected.bad{border-color:var(--red);background:#fee2e2;color:#991b1b}
-.action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:850px){.action-grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.action-grid{grid-template-columns:1fr}}.action-choice.selected{background:#e0f2fe;border-color:var(--blue2);color:#075985}
-.other-box{display:none;margin-top:8px}.other-box.show{display:block}.field-tools{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:6px}.mic-btn{border:0;background:#eef7ff;color:var(--navy);border-radius:999px;padding:9px 13px;font-weight:900;cursor:pointer}.mic-btn.listening{background:#fee2e2;color:#991b1b}
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}@media(max-width:900px){.kpi-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
-.kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:18px}.kpi-title{color:var(--muted);font-weight:900;font-size:13px;text-transform:uppercase}.kpi-value{margin-top:6px;font-size:36px;font-weight:900;color:var(--navy)}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:980px;margin-top:18px}th,td{border-bottom:1px solid #e9eef6;padding:12px;vertical-align:top;text-align:left;font-size:14px}th{color:#475569;text-transform:uppercase;font-size:12px;letter-spacing:.08em}
-.footer{position:fixed;left:0;right:0;bottom:0;background:var(--navy);color:white;text-align:center;padding:11px 14px;font-size:13px;z-index:20}.small{font-size:13px;color:var(--muted);line-height:1.5}.hidden{display:none!important}
+:root{
+  --navy:#111b3f;
+  --navy2:#16275a;
+  --blue:#0096d6;
+  --blue2:#0077b5;
+  --cream:#f3eee6;
+  --ink:#07152f;
+  --muted:#66758d;
+  --line:#d8e2ef;
+  --soft:#f8fbff;
+  --green:#16a34a;
+  --orange:#f59e0b;
+  --red:#dc2626;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:Arial, Helvetica, sans-serif;
+  padding-bottom:56px;
+}
+
+/* HEADER — repris dans l'esprit de la maquette validée */
+.hero{
+  max-width:1280px;
+  margin:0 auto;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:white;
+  border-radius:0 0 32px 32px;
+  padding:34px 34px 30px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 18px 42px rgba(7,21,47,.14);
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  top:-130px;
+  right:-90px;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  background:rgba(0,150,214,.18);
+}
+.hero-main{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:92px 1fr;
+  gap:24px;
+  align-items:start;
+}
+.logo-card{
+  width:86px;
+  height:86px;
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.logo-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.logo-fallback{
+  font-size:11px;
+  color:rgba(255,255,255,.75);
+  text-align:center;
+  padding:8px;
+}
+.kicker{
+  color:#58d5ff;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+h1{
+  margin:0;
+  font-size:clamp(46px,7vw,92px);
+  line-height:.92;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  font-weight:900;
+}
+h1 span{color:#58d5ff}
+.hero p{
+  max-width:860px;
+  margin:20px 0 0;
+  color:rgba(255,255,255,.84);
+  font-size:20px;
+  line-height:1.55;
+}
+.nav-steps{
+  position:relative;
+  z-index:2;
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:30px;
+}
+.nav-btn{
+  border:1px solid rgba(255,255,255,.22);
+  color:white;
+  background:rgba(255,255,255,.08);
+  border-radius:999px;
+  padding:14px 25px;
+  font-weight:900;
+  font-size:17px;
+  cursor:pointer;
+}
+.nav-btn.active{
+  background:var(--blue);
+  border-color:var(--blue);
+}
+
+/* LAYOUT */
+main{
+  max-width:1280px;
+  margin:0 auto;
+  padding:24px 34px 82px;
+}
+.screen{display:none}
+.screen.active{display:block}
+.board{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  align-items:stretch;
+}
+.panel{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:28px;
+  min-height:570px;
+  box-shadow:0 14px 36px rgba(7,21,47,.08);
+  display:flex;
+  flex-direction:column;
+}
+.panel h2{
+  margin:0 0 18px;
+  font-size:38px;
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.panel p{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+label{
+  display:block;
+  margin:17px 0 8px;
+  color:#64748b;
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.18em;
+}
+select,input,textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:14px 15px;
+  font-size:17px;
+  font-family:inherit;
+  color:var(--ink);
+  background:white;
+}
+textarea{
+  min-height:86px;
+  resize:vertical;
+}
+.btn-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+button{
+  font-family:inherit;
+}
+.btn{
+  border:0;
+  border-radius:15px;
+  padding:14px 18px;
+  background:var(--blue);
+  color:white;
+  font-weight:900;
+  font-size:15px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  cursor:pointer;
+}
+.btn.secondary{background:var(--navy)}
+.btn.light{
+  background:#eef7ff;
+  color:var(--navy);
+  border:1px solid #c9e7fb;
+}
+.btn.green{background:var(--green)}
+.btn.red{background:var(--red)}
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+/* PROFILE */
+.profile-card{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:66px 1fr;
+  gap:16px;
+  align-items:center;
+  background:#f7fbff;
+  border:1px solid #ccecff;
+  border-radius:20px;
+  padding:16px;
+}
+.avatar{
+  width:60px;
+  height:60px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--blue2),var(--blue));
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:900;
+}
+.profile-name{
+  font-size:23px;
+  font-weight:900;
+}
+.profile-job{
+  margin-top:4px;
+  color:var(--muted);
+}
+
+/* QR */
+.qr-box{
+  flex:1;
+  min-height:340px;
+  border:2px dashed #cfe4f6;
+  border-radius:24px;
+  background:var(--soft);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:24px;
+  color:#62748c;
+}
+.qr-box.ready{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:22px;
+  text-align:left;
+}
+.qr-box img{
+  width:220px;
+  height:220px;
+  border:10px solid white;
+  border-radius:22px;
+  background:white;
+  box-shadow:0 10px 26px rgba(7,21,47,.12);
+}
+.link-box{
+  word-break:break-all;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:14px;
+  font-size:14px;
+  color:#475569;
+}
+.hint{
+  margin-top:auto;
+  background:#eff8ff;
+  border:1px solid #b9e6fe;
+  color:#075985;
+  border-radius:18px;
+  padding:15px 16px;
+  line-height:1.55;
+  font-size:15px;
+}
+
+/* FORM */
+.form-wrap{
+  max-width:900px;
+  margin:0 auto;
+}
+.form-header{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:0 14px 36px rgba(7,21,47,.08);
+}
+.question{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:20px;
+  margin:16px 0;
+  box-shadow:0 8px 24px rgba(7,21,47,.05);
+}
+.question h3{
+  margin:0 0 8px;
+  font-size:22px;
+}
+.question p{
+  margin:0 0 14px;
+  color:var(--muted);
+  line-height:1.5;
+}
+.score-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:9px;
+}
+.choice,.action-choice{
+  border:2px solid #e4e7ec;
+  background:white;
+  border-radius:14px;
+  padding:13px 9px;
+  min-height:78px;
+  cursor:pointer;
+  font-weight:900;
+  text-align:center;
+}
+.choice small,.action-choice small{
+  display:block;
+  color:var(--muted);
+  font-weight:500;
+  margin-top:5px;
+  line-height:1.25;
+}
+.choice.selected.top{border-color:var(--green);background:#dcfce7;color:#166534}
+.choice.selected.good{border-color:#84cc16;background:#ecfccb;color:#365314}
+.choice.selected.mid{border-color:var(--orange);background:#fef3c7;color:#92400e}
+.choice.selected.low{border-color:#fb7185;background:#ffe4e6;color:#9f1239}
+.choice.selected.bad{border-color:var(--red);background:#fee2e2;color:#991b1b}
+.action-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.action-choice.selected{
+  background:#e0f2fe;
+  border-color:var(--blue2);
+  color:#075985;
+}
+.other-box{display:none;margin-top:8px}
+.other-box.show{display:block}
+.field-tools{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-top:6px;
+}
+.micro{
+  border:0;
+  border-radius:999px;
+  padding:9px 13px;
+  background:#eef7ff;
+  color:var(--navy);
+  font-weight:900;
+  cursor:pointer;
+}
+.micro.listening{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+/* RESULTS */
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.kpi{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:18px;
+  padding:18px;
+}
+.kpi-label{
+  color:var(--muted);
+  text-transform:uppercase;
+  font-size:13px;
+  font-weight:900;
+}
+.kpi-value{
+  margin-top:6px;
+  font-size:36px;
+  font-weight:900;
+  color:var(--navy);
+}
+.table-wrap{overflow-x:auto}
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+  margin-top:18px;
+}
+th,td{
+  border-bottom:1px solid #e9eef6;
+  padding:12px;
+  vertical-align:top;
+  text-align:left;
+  font-size:14px;
+}
+th{
+  color:#475569;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:.08em;
+}
+.footer{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:10;
+  background:var(--navy);
+  color:white;
+  text-align:center;
+  padding:11px 14px;
+  font-size:13px;
+}
+.hidden{display:none!important}
+.small{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+@media(max-width:900px){
+  .hero{padding:24px 18px 28px}
+  .hero-main{grid-template-columns:1fr}
+  .logo-card{width:74px;height:74px}
+  main{padding:18px 14px 82px}
+  .board{grid-template-columns:1fr}
+  .panel{min-height:auto}
+  .qr-box.ready{grid-template-columns:1fr;text-align:center}
+  .score-grid{grid-template-columns:1fr 1fr}
+  .action-grid{grid-template-columns:1fr 1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  h1{font-size:42px}
+  .panel h2{font-size:31px}
+  .score-grid,.action-grid,.kpis{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+
 <section class="hero">
-  <div class="hero-top">
-    <div class="logo-box"><img src="logo.jpg" alt="Logo HOP" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block';"><div id="logoFallback" class="logo-fallback" style="display:none">logo.png</div></div>
+  <div class="hero-main">
+    <div class="logo-card">
+      <img src="logo.png" alt="Logo HOP" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block';">
+      <div id="logoFallback" class="logo-fallback" style="display:none;">logo.png</div>
+    </div>
     <div>
       <div class="kicker">HOP! Club des entrepreneurs Blanquefort</div>
       <h1>Boost <span>LinkedIn</span></h1>
-      <p>Un profil est projeté. Le groupe scanne le QR code. Chaque personne donne son avis depuis son téléphone. Les réponses remontent dans le tableau et dans la synthèse.</p>
+      <p>Un profil est projeté. Le groupe scanne le QR code. Chaque personne donne son avis depuis son téléphone. La synthèse ressort avec les idées et les actions prioritaires.</p>
     </div>
   </div>
-  <div class="steps-nav">
-    <button class="step-tab active" data-screen="projection">1 · Projection / QR</button>
-    <button class="step-tab" data-screen="formulaire">2 · Formulaire participant</button>
-    <button class="step-tab" data-screen="resultats">3 · Résultats</button>
+
+  <div class="nav-steps">
+    <button class="nav-btn active" data-screen="projection">1 · Projection / QR</button>
+    <button class="nav-btn" data-screen="formulaire">2 · Formulaire participant</button>
+    <button class="nav-btn" data-screen="resultats">3 · Résultats</button>
   </div>
 </section>
 
 <main>
   <section id="projection" class="screen active">
-    <div class="two-col">
-      <div class="card">
+    <div class="board">
+      <div class="panel">
         <h2>Préparer l’audit</h2>
         <p>Choisis le profil que le groupe va regarder ensemble, ou saisis un invité.</p>
 
-        <button class="btn dark" id="diagnosticBtn" type="button">Tester Apps Script</button>
-
         <label for="memberSelect">Membre HOP audité</label>
-        <select id="memberSelect" disabled><option>Chargement des membres...</option></select>
+        <select id="memberSelect">
+          <option value="">Choisir un membre</option>
+        </select>
 
-        <button class="btn light" id="reloadMembersBtn" type="button">Recharger les membres</button>
-        <button class="btn light" id="startMemberBtn" type="button" disabled>C’est parti avec ce membre</button>
-        <button class="btn light" id="showGuestBtn" type="button">Auditer un invité</button>
+        <div class="btn-row">
+          <button class="btn light" id="loadDemoMembersBtn" type="button">Charger membres démo</button>
+          <button class="btn light" id="startMemberBtn" type="button">C’est parti avec ce membre</button>
+          <button class="btn light" id="showGuestBtn" type="button">Auditer un invité</button>
+        </div>
 
         <div id="guestBox" class="hidden">
           <label for="guestName">Nom de l’invité</label>
@@ -88,92 +524,549 @@ select,input,textarea{width:100%;border:1px solid var(--border);border-radius:15
 
         <div class="profile-card">
           <div class="avatar" id="avatar">—</div>
-          <div><div class="profile-name" id="profileName">Aucun profil sélectionné</div><div class="profile-job" id="profileJob">Recharge les membres ou saisis un invité.</div></div>
+          <div>
+            <div class="profile-name" id="profileName">Aucun profil sélectionné</div>
+            <div class="profile-job" id="profileJob">Choisis un membre ou saisis un invité.</div>
+          </div>
         </div>
 
-        <button class="btn green" id="makeQrBtn" type="button" disabled>Créer le QR code pour ce profil</button>
-        <button class="btn dark" id="openFormBtn" type="button" disabled>Ouvrir le formulaire participant</button>
-        <button class="btn" id="showResultsBtn" type="button">Voir les résultats</button>
-        <button class="btn danger" id="newAuditBtn" type="button">Nouvel audit / remettre à zéro</button>
+        <div class="btn-row">
+          <button class="btn green" id="makeQrBtn" type="button" disabled>Créer le QR code</button>
+          <button class="btn secondary" id="openFormBtn" type="button" disabled>Ouvrir le formulaire</button>
+          <button class="btn" id="showResultsBtn" type="button">Voir les résultats</button>
+          <button class="btn red" id="resetBtn" type="button">Remettre à zéro</button>
+        </div>
 
-        <div class="info-box" id="statusBox">Connexion au tableau en cours...</div>
+        <div class="hint">
+          Cette version est volontairement stable : tous les boutons doivent fonctionner. Le branchement Sheet se fait après validation de cette mise en page.
+        </div>
       </div>
 
-      <div class="card">
+      <div class="panel">
         <h2>À projeter</h2>
-        <p>Quand le QR code apparaît, tout le monde scanne. Les réponses arrivent dans l’onglet <strong>LINKEDIN_REPONSES</strong>.</p>
-        <div id="qrZone" class="qr-zone"><div>Le QR code apparaîtra ici après création de l’audit.</div></div>
+        <p>Quand le QR code apparaît, tout le monde scanne. Pour tester seule, clique aussi sur “ouvrir le formulaire”.</p>
+
+        <div id="qrBox" class="qr-box">
+          <div>Le QR code apparaîtra ici après création de l’audit.</div>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="formulaire" class="screen">
     <div class="form-wrap">
-      <div class="form-head">
+      <div class="form-header">
         <h2>Ton avis sur le profil LinkedIn projeté</h2>
-        <div class="profile-card"><div class="avatar" id="formAvatar">—</div><div><div class="profile-name" id="formProfileName">Profil audité</div><div class="profile-job" id="formProfileJob">—</div></div></div>
+        <div class="profile-card">
+          <div class="avatar" id="formAvatar">—</div>
+          <div>
+            <div class="profile-name" id="formProfileName">Profil audité</div>
+            <div class="profile-job" id="formProfileJob">—</div>
+          </div>
+        </div>
         <label for="participantName">Ton prénom / nom</label>
         <input id="participantName" placeholder="Ex : Sophie">
       </div>
 
-      <div class="q" data-question="titre" data-param="titre_score"><h3>1. Titre LinkedIn</h3><p>Est-ce qu’on comprend vite ce que la personne fait, pour qui, et avec quelle valeur ?</p><div class="score-row"><button class="choice bad" data-value="0" type="button">Pas du tout<small>Titre flou</small></button><button class="choice low" data-value="1.25" type="button">Très peu<small>Pas assez ciblé</small></button><button class="choice mid" data-value="2.5" type="button">À moitié<small>Compréhensible mais faible</small></button><button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Bonne base</small></button><button class="choice top" data-value="5" type="button">Oui clairement<small>Titre efficace</small></button></div></div>
-      <div class="q" data-question="photo" data-param="photo_score"><h3>2. Photo + bannière</h3><p>Est-ce que l’identité visuelle inspire confiance et donne une première impression professionnelle ?</p><div class="score-row"><button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas pro / absent</small></button><button class="choice low" data-value="1.25" type="button">Très peu<small>Faible impact</small></button><button class="choice mid" data-value="2.5" type="button">À moitié<small>Correct mais neutre</small></button><button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Rassurant</small></button><button class="choice top" data-value="5" type="button">Oui clairement<small>Très bon impact</small></button></div></div>
-      <div class="q" data-question="preuve" data-param="preuve_score"><h3>3. Preuves et crédibilité</h3><p>Le profil montre-t-il des preuves : expériences, réalisations, recommandations, publications, résultats ?</p><div class="score-row"><button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas de preuve</small></button><button class="choice low" data-value="1.25" type="button">Très peu<small>Trop léger</small></button><button class="choice mid" data-value="2.5" type="button">À moitié<small>Quelques éléments</small></button><button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Crédible</small></button><button class="choice top" data-value="5" type="button">Oui clairement<small>Très rassurant</small></button></div></div>
-      <div class="q" data-question="recommandation" data-param="recommandation_score"><h3>4. Envie de recommander</h3><p>Après avoir vu le profil LinkedIn, est-ce que j’aurais envie de contacter ou recommander cette personne ?</p><div class="score-row"><button class="choice bad" data-value="0" type="button">Non<small>Pas assez clair</small></button><button class="choice low" data-value="1.25" type="button">Peu probable<small>Il manque un déclic</small></button><button class="choice mid" data-value="2.5" type="button">Peut-être<small>Avec amélioration</small></button><button class="choice good" data-value="3.75" type="button">Probable<small>Je pourrais y penser</small></button><button class="choice top" data-value="5" type="button">Oui<small>Je pourrais recommander</small></button></div></div>
-
-      <div class="q"><h3>5. Action d’entraide LinkedIn</h3><p>Sans quitter le formulaire, indique ce que tu pourrais faire après l’atelier.</p><div class="action-grid"><button class="action-choice" data-action="Me connecter" type="button">Me connecter<small>Envoyer une demande</small></button><button class="action-choice" data-action="Commenter un post" type="button">Commenter<small>Commenter un post</small></button><button class="action-choice" data-action="Recommander" type="button">Recommander<small>Penser à lui/elle</small></button><button class="action-choice" data-action="Proposer une idée de post" type="button">Idée de post<small>Suggérer un sujet</small></button></div></div>
-
-      <div class="q"><h3>6. Retours rapides</h3>
-        <label for="rassureSelect">Ce qui fonctionne déjà</label><select id="rassureSelect" data-other="rassureOther"><option value="">Choisir une piste</option><option>Titre clair</option><option>Photo professionnelle</option><option>Bannière cohérente</option><option>Activité bien expliquée</option><option>Expériences rassurantes</option><option>Publications récentes</option><option>Ton humain</option><option>Preuves / recommandations visibles</option><option value="AUTRE">Autre</option></select><div id="rassureOther" class="other-box"><textarea id="rassure" placeholder="Autre point positif..."></textarea><div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="mic-btn" data-target="rassure" type="button">🎙️ Micro</button></div></div>
-        <label for="bloqueSelect">Ce qui manque / freine</label><select id="bloqueSelect" data-other="bloqueOther"><option value="">Choisir une piste</option><option>Titre trop vague</option><option>Photo peu professionnelle</option><option>Pas de bannière</option><option>Activité difficile à comprendre</option><option>Pas assez de preuves</option><option>Pas de publications récentes</option><option>Pas de recommandations</option><option>Profil trop personnel / pas assez orienté métier</option><option value="AUTRE">Autre</option></select><div id="bloqueOther" class="other-box"><textarea id="bloque" placeholder="Autre frein ou manque..."></textarea><div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="mic-btn" data-target="bloque" type="button">🎙️ Micro</button></div></div>
-        <label for="ideePostSelect">Idée de post LinkedIn</label><select id="ideePostSelect" data-other="ideePostOther"><option value="">Choisir une idée</option><option>Un cas client concret</option><option>Une erreur fréquente à éviter</option><option>Un avant / après</option><option>Une astuce métier simple</option><option>Les coulisses d’une mission</option><option>Une réponse à une question client</option><option>Une présentation de son offre en 3 points</option><option>Un témoignage / retour client</option><option value="AUTRE">Autre</option></select><div id="ideePostOther" class="other-box"><textarea id="ideePost" placeholder="Autre idée de post..."></textarea><div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="mic-btn" data-target="ideePost" type="button">🎙️ Micro</button></div></div>
-        <label for="actionSelect">Action prioritaire cette semaine</label><select id="actionSelect" data-other="actionOther"><option value="">Choisir une action</option><option>Réécrire le titre LinkedIn</option><option>Changer / améliorer la photo</option><option>Créer une bannière claire</option><option>Ajouter une section Infos plus précise</option><option>Publier un post simple cette semaine</option><option>Demander 2 recommandations</option><option>Ajouter des preuves / réalisations</option><option>Clarifier la cible client</option><option value="AUTRE">Autre</option></select><div id="actionOther" class="other-box"><textarea id="action" placeholder="Autre action prioritaire..."></textarea><div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="mic-btn" data-target="action" type="button">🎙️ Micro</button></div></div>
+      <div class="question" data-question="titre">
+        <h3>1. Titre LinkedIn</h3>
+        <p>Est-ce qu’on comprend vite ce que la personne fait, pour qui, et avec quelle valeur ?</p>
+        <div class="score-grid">
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Titre flou</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Pas assez ciblé</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Compréhensible mais faible</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Bonne base</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Titre efficace</small></button>
+        </div>
       </div>
 
-      <button class="btn" id="sendBtn" type="button">Envoyer mon avis</button><button class="btn light" id="backProjectionBtn" type="button">Retour projection</button><p class="small" id="formMsg"></p>
+      <div class="question" data-question="photo">
+        <h3>2. Photo + bannière</h3>
+        <p>Est-ce que l’identité visuelle inspire confiance et donne une première impression professionnelle ?</p>
+        <div class="score-grid">
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas pro / absent</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Faible impact</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Correct mais neutre</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Rassurant</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Très bon impact</small></button>
+        </div>
+      </div>
+
+      <div class="question" data-question="preuve">
+        <h3>3. Preuves et crédibilité</h3>
+        <p>Le profil montre-t-il des preuves : expériences, réalisations, recommandations, publications, résultats ?</p>
+        <div class="score-grid">
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas de preuve</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Trop léger</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Quelques éléments</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Crédible</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Très rassurant</small></button>
+        </div>
+      </div>
+
+      <div class="question" data-question="recommandation">
+        <h3>4. Envie de recommander</h3>
+        <p>Après avoir vu le profil LinkedIn, est-ce que j’aurais envie de contacter ou recommander cette personne ?</p>
+        <div class="score-grid">
+          <button class="choice bad" data-value="0" type="button">Non<small>Pas assez clair</small></button>
+          <button class="choice low" data-value="1.25" type="button">Peu probable<small>Il manque un déclic</small></button>
+          <button class="choice mid" data-value="2.5" type="button">Peut-être<small>Avec amélioration</small></button>
+          <button class="choice good" data-value="3.75" type="button">Probable<small>Je pourrais y penser</small></button>
+          <button class="choice top" data-value="5" type="button">Oui<small>Je pourrais recommander</small></button>
+        </div>
+      </div>
+
+      <div class="question">
+        <h3>5. Action d’entraide LinkedIn</h3>
+        <p>Sans quitter le formulaire, indique ce que tu pourrais faire après l’atelier.</p>
+        <div class="action-grid">
+          <button class="action-choice" data-action="Me connecter" type="button">Me connecter<small>Envoyer une demande</small></button>
+          <button class="action-choice" data-action="Commenter un post" type="button">Commenter<small>Commenter un post</small></button>
+          <button class="action-choice" data-action="Recommander" type="button">Recommander<small>Penser à lui/elle</small></button>
+          <button class="action-choice" data-action="Proposer une idée de post" type="button">Idée de post<small>Suggérer un sujet</small></button>
+        </div>
+      </div>
+
+      <div class="question">
+        <h3>6. Retours rapides</h3>
+
+        <label for="rassureSelect">Ce qui fonctionne déjà</label>
+        <select id="rassureSelect" data-other="rassureOther">
+          <option value="">Choisir une piste</option>
+          <option>Titre clair</option>
+          <option>Photo professionnelle</option>
+          <option>Bannière cohérente</option>
+          <option>Activité bien expliquée</option>
+          <option>Expériences rassurantes</option>
+          <option>Publications récentes</option>
+          <option>Ton humain</option>
+          <option>Preuves / recommandations visibles</option>
+          <option value="AUTRE">Autre</option>
+        </select>
+        <div id="rassureOther" class="other-box">
+          <textarea id="rassure" placeholder="Autre point positif..."></textarea>
+          <div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="micro" data-target="rassure" type="button">🎙️ Micro</button></div>
+        </div>
+
+        <label for="bloqueSelect">Ce qui manque / freine</label>
+        <select id="bloqueSelect" data-other="bloqueOther">
+          <option value="">Choisir une piste</option>
+          <option>Titre trop vague</option>
+          <option>Photo peu professionnelle</option>
+          <option>Pas de bannière</option>
+          <option>Activité difficile à comprendre</option>
+          <option>Pas assez de preuves</option>
+          <option>Pas de publications récentes</option>
+          <option>Pas de recommandations</option>
+          <option>Profil trop personnel / pas assez orienté métier</option>
+          <option value="AUTRE">Autre</option>
+        </select>
+        <div id="bloqueOther" class="other-box">
+          <textarea id="bloque" placeholder="Autre frein ou manque..."></textarea>
+          <div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="micro" data-target="bloque" type="button">🎙️ Micro</button></div>
+        </div>
+
+        <label for="ideePostSelect">Idée de post LinkedIn</label>
+        <select id="ideePostSelect" data-other="ideePostOther">
+          <option value="">Choisir une idée</option>
+          <option>Un cas client concret</option>
+          <option>Une erreur fréquente à éviter</option>
+          <option>Un avant / après</option>
+          <option>Une astuce métier simple</option>
+          <option>Les coulisses d’une mission</option>
+          <option>Une réponse à une question client</option>
+          <option>Une présentation de son offre en 3 points</option>
+          <option>Un témoignage / retour client</option>
+          <option value="AUTRE">Autre</option>
+        </select>
+        <div id="ideePostOther" class="other-box">
+          <textarea id="ideePost" placeholder="Autre idée de post..."></textarea>
+          <div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="micro" data-target="ideePost" type="button">🎙️ Micro</button></div>
+        </div>
+
+        <label for="actionSelect">Action prioritaire cette semaine</label>
+        <select id="actionSelect" data-other="actionOther">
+          <option value="">Choisir une action</option>
+          <option>Réécrire le titre LinkedIn</option>
+          <option>Changer / améliorer la photo</option>
+          <option>Créer une bannière claire</option>
+          <option>Ajouter une section Infos plus précise</option>
+          <option>Publier un post simple cette semaine</option>
+          <option>Demander 2 recommandations</option>
+          <option>Ajouter des preuves / réalisations</option>
+          <option>Clarifier la cible client</option>
+          <option value="AUTRE">Autre</option>
+        </select>
+        <div id="actionOther" class="other-box">
+          <textarea id="action" placeholder="Autre action prioritaire..."></textarea>
+          <div class="field-tools"><span class="small">Écrire ou dicter.</span><button class="micro" data-target="action" type="button">🎙️ Micro</button></div>
+        </div>
+      </div>
+
+      <button class="btn" id="sendBtn" type="button">Envoyer mon avis</button>
+      <button class="btn light" id="backProjectionBtn" type="button">Retour projection</button>
+      <p id="formMsg" class="small"></p>
     </div>
   </section>
 
   <section id="resultats" class="screen">
-    <div class="card"><h2>Synthèse collective</h2><div class="kpi-grid"><div class="kpi"><div class="kpi-title">Réponses</div><div class="kpi-value" id="countResult">0</div></div><div class="kpi"><div class="kpi-title">Moyenne /20</div><div class="kpi-value" id="avgResult">0</div></div><div class="kpi"><div class="kpi-title">Actions d’entraide</div><div class="kpi-value" id="helpResult">0</div></div><div class="kpi"><div class="kpi-title">Audit actif</div><div class="kpi-value" id="auditResult">—</div></div></div><button class="btn light" id="refreshBtn" type="button">Rafraîchir les résultats</button><button class="btn light" id="copyBtn" type="button">Copier la synthèse</button><p class="small" id="copyMsg"></p></div>
-    <div class="card"><h2>Retours reçus</h2><div class="table-wrap"><table><thead><tr><th>Participant</th><th>Score</th><th>Entraide</th><th>Fonctionne</th><th>Frein</th><th>Idée de post</th><th>Priorité</th></tr></thead><tbody id="responsesBody"><tr><td colspan="7">Aucune réponse pour le moment.</td></tr></tbody></table></div></div>
+    <div class="panel" style="min-height:auto;">
+      <h2>Synthèse collective</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-label">Réponses</div><div class="kpi-value" id="countResult">0</div></div>
+        <div class="kpi"><div class="kpi-label">Moyenne /20</div><div class="kpi-value" id="avgResult">0</div></div>
+        <div class="kpi"><div class="kpi-label">Actions d’entraide</div><div class="kpi-value" id="helpResult">0</div></div>
+        <div class="kpi"><div class="kpi-label">Profil</div><div class="kpi-value" id="profileResult">—</div></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn light" id="copyBtn" type="button">Copier la synthèse</button>
+        <button class="btn light" id="csvBtn" type="button">Exporter CSV</button>
+      </div>
+    </div>
+
+    <div class="panel" style="min-height:auto;margin-top:20px;">
+      <h2>Retours reçus</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Score</th>
+              <th>Entraide</th>
+              <th>Fonctionne</th>
+              <th>Frein</th>
+              <th>Idée de post</th>
+              <th>Priorité</th>
+            </tr>
+          </thead>
+          <tbody id="responsesBody">
+            <tr><td colspan="7">Aucune réponse pour le moment.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </section>
 </main>
 
-<div class="footer">Atelier Boost LinkedIn · HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio</div>
+<div class="footer">Version réservée à HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio</div>
 
 <script>
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbww7rInrpo21HZaSrKFur6wtpjN9YoyxWCkg1Q79q2VEXLgvX553O1O7hjQHWcnQKtj/exec";
-
 (function(){
-  const state={profileName:'',profileJob:'',auditId:localStorage.getItem('hop_linkedin_def2_audit_id')||'',responses:[]};
-  function $(id){return document.getElementById(id);}
-  function initials(name){return String(name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'—';}
-  function enc(v){return encodeURIComponent(v||'');} function dec(v){try{return decodeURIComponent(v||'')}catch(e){return v||''}}
-  function api(action,params={}){return new Promise((resolve,reject)=>{const cb='cb_'+Date.now()+'_'+Math.random().toString(36).slice(2);params.action=action;params.callback=cb;const url=WEBAPP_URL+'?'+Object.keys(params).map(k=>encodeURIComponent(k)+'='+encodeURIComponent(params[k]??'')).join('&');const s=document.createElement('script');const t=setTimeout(()=>{cleanup();reject(new Error('Timeout Apps Script'));},15000);function cleanup(){clearTimeout(t);delete window[cb];s.remove();}window[cb]=data=>{cleanup();resolve(data);};s.onerror=()=>{cleanup();reject(new Error('Erreur chargement Apps Script'));};s.src=url;document.body.appendChild(s);});}
-  function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.step-tab').forEach(t=>t.classList.remove('active'));$(id).classList.add('active');const tab=document.querySelector('.step-tab[data-screen="'+id+'"]');if(tab)tab.classList.add('active');if(id==='resultats')loadResults();window.scrollTo({top:0,behavior:'smooth'});}
-  function setStatus(msg,error=false){$('statusBox').className=error?'warn-box':'info-box';$('statusBox').textContent=msg;}
-  function syncProfile(){['profileName','formProfileName'].forEach(id=>$(id).textContent=state.profileName||'Aucun profil sélectionné');['profileJob','formProfileJob'].forEach(id=>$(id).textContent=state.profileJob||'—');['avatar','formAvatar'].forEach(id=>$(id).textContent=initials(state.profileName));}
-  function setProfile(name,job){state.profileName=name||'Profil audité';state.profileJob=job||'';state.auditId='';localStorage.removeItem('hop_linkedin_def2_audit_id');syncProfile();$('makeQrBtn').disabled=false;$('openFormBtn').disabled=false;$('qrZone').classList.remove('has-qr');$('qrZone').innerHTML='<div>Le QR code apparaîtra ici après création de l’audit.</div>';}
-  async function diagnostic(){setStatus('Diagnostic Apps Script en cours...');try{const r=await api('ping');if(!r.ok)throw new Error(r.error||'Ping KO');setStatus('Apps Script OK · Sheet : '+r.spreadsheet+' · Onglets : '+(r.sheets||[]).join(', '));}catch(e){setStatus('Diagnostic KO : '+e.message+' · Vérifie le redéploiement Web App en nouvelle version.',true);}}
-  async function loadMembers(){$('memberSelect').disabled=true;$('startMemberBtn').disabled=true;$('memberSelect').innerHTML='<option>Chargement des membres...</option>';setStatus('Chargement des membres depuis le Sheet...');try{const r=await api('get_members');if(!r.ok)throw new Error(r.error||'Erreur inconnue');const m=r.members||[];if(!m.length){$('memberSelect').innerHTML='<option>Aucun membre trouvé</option>';setStatus('Aucun membre trouvé dans MEMBRES. Vérifie la colonne Nom et les lignes membres.',true);return;}$('memberSelect').innerHTML=m.map(x=>'<option value="'+attr(x.nom)+'|'+attr(x.metier||'')+'">'+esc(x.nom)+' · '+esc(x.metier||'')+'</option>').join('');$('memberSelect').disabled=false;$('startMemberBtn').disabled=false;setStatus(m.length+' membres chargés.');}catch(e){$('memberSelect').innerHTML='<option>Erreur de chargement</option>';setStatus('Erreur chargement membres : '+e.message,true);}}
-  async function startAudit(){const r=await api('start_audit',{profile_name:state.profileName,profile_job:state.profileJob,source:'html_def2'});if(!r.ok)throw new Error(r.error||'Erreur création audit');state.auditId=r.audit_id;localStorage.setItem('hop_linkedin_def2_audit_id',state.auditId);setStatus('Audit créé : '+state.auditId);return r;}
-  function formUrl(){const base=window.location.href.split('#')[0].split('?')[0];return base+'?mode=form&audit='+enc(state.auditId)+'&name='+enc(state.profileName)+'&job='+enc(state.profileJob);}
-  async function makeQr(){if(!state.profileName){alert('Choisis un membre ou un invité.');return;}try{if(!state.auditId)await startAudit();const url=formUrl();const qr='https://api.qrserver.com/v1/create-qr-code/?size=420x420&data='+encodeURIComponent(url);$('qrZone').classList.add('has-qr');$('qrZone').innerHTML='<img id="qrImage" src="'+qr+'" alt="QR code"><div><h3>Scanner pour répondre</h3><p>Tout le groupe scanne ce QR code depuis son téléphone.</p><div class="linkbox">'+url+'</div></div>';}catch(e){setStatus('Erreur QR/audit : '+e.message,true);}}
-  function getScore(){let total=0,answered=0,scores={};document.querySelectorAll('.q[data-question]').forEach(q=>{const sel=q.querySelector('.choice.selected');if(sel){const v=Number(sel.dataset.value);total+=v;answered++;scores[q.dataset.param]=v;}});return {total,answered,scores};}
-  function getActions(){return Array.from(document.querySelectorAll('.action-choice.selected')).map(b=>b.dataset.action);}
-  function selectValue(sid,tid){const sel=$(sid),txt=$(tid);return sel.value==='AUTRE'?txt.value.trim():(sel.value||'');}
-  async function sendResponse(){const score=getScore();if(score.answered<4){$('formMsg').textContent='Il faut répondre aux 4 évaluations avant d’envoyer.';$('formMsg').style.color='#dc2626';return;}if(!state.auditId){$('formMsg').textContent='Audit introuvable. Re-scanne le QR code.';$('formMsg').style.color='#dc2626';return;}$('sendBtn').disabled=true;$('formMsg').textContent='Envoi en cours...';try{const r=await api('save_response',{audit_id:state.auditId,profile_name:state.profileName,profile_job:state.profileJob,participant:$('participantName').value.trim()||'Anonyme',titre_score:score.scores.titre_score||0,photo_score:score.scores.photo_score||0,preuve_score:score.scores.preuve_score||0,recommandation_score:score.scores.recommandation_score||0,actions_entraide:getActions().join(', '),fonctionne:selectValue('rassureSelect','rassure'),frein:selectValue('bloqueSelect','bloque'),idee_post:selectValue('ideePostSelect','ideePost'),action_prioritaire:selectValue('actionSelect','action'),user_agent:navigator.userAgent});if(!r.ok)throw new Error(r.error||'Erreur envoi');$('formMsg').textContent='Avis envoyé. Merci !';$('formMsg').style.color='#16a34a';clearForm();}catch(e){$('formMsg').textContent='Erreur : '+e.message;$('formMsg').style.color='#dc2626';}finally{$('sendBtn').disabled=false;}}
-  function clearForm(){$('participantName').value='';['rassure','bloque','ideePost','action'].forEach(id=>$(id).value='');['rassureSelect','bloqueSelect','ideePostSelect','actionSelect'].forEach(id=>$(id).value='');document.querySelectorAll('.other-box').forEach(b=>b.classList.remove('show'));document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));document.querySelectorAll('.action-choice').forEach(b=>b.classList.remove('selected'));}
-  async function loadResults(){if(!state.auditId){renderResults({count:0,average_20:0,help_actions_count:0,responses:[]});return;}try{const r=await api('get_results',{audit_id:state.auditId});if(!r.ok)throw new Error(r.error||'Erreur résultats');state.responses=r.responses||[];renderResults(r);}catch(e){$('responsesBody').innerHTML='<tr><td colspan="7">Erreur résultats : '+esc(e.message)+'</td></tr>';}}
-  function renderResults(r){$('countResult').textContent=r.count||0;$('avgResult').textContent=Number(r.average_20||0).toFixed(1);$('helpResult').textContent=r.help_actions_count||0;$('auditResult').textContent=state.auditId?'Oui':'—';const body=$('responsesBody');body.innerHTML='';const res=r.responses||[];if(!res.length){body.innerHTML='<tr><td colspan="7">Aucune réponse pour le moment.</td></tr>';return;}res.forEach(x=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+esc(x.participant||'Anonyme')+'</td><td><strong>'+Number(x.score_total_20||0).toFixed(1)+'/20</strong></td><td>'+esc(x.actions_entraide)+'</td><td>'+esc(x.fonctionne)+'</td><td>'+esc(x.frein)+'</td><td>'+esc(x.idee_post)+'</td><td>'+esc(x.action_prioritaire)+'</td>';body.appendChild(tr);});}
-  function summary(){const count=state.responses.length;const avg=count?state.responses.reduce((s,r)=>s+Number(r.score_total_20||0),0)/count:0;const lines=['Boost LinkedIn collectif — HOP! Blanquefort','Profil audité : '+state.profileName+' — '+state.profileJob,'Réponses : '+count,'Moyenne : '+avg.toFixed(1)+'/20','','Ce qui fonctionne déjà :'];state.responses.forEach(r=>{if(r.fonctionne)lines.push('- '+r.fonctionne);});lines.push('','Freins ou manques :');state.responses.forEach(r=>{if(r.frein)lines.push('- '+r.frein);});lines.push('','Idées de posts :');state.responses.forEach(r=>{if(r.idee_post)lines.push('- '+r.idee_post);});lines.push('','Actions prioritaires :');state.responses.forEach(r=>{if(r.action_prioritaire)lines.push('- '+r.action_prioritaire);});return lines.join('\n');}
-  function resetAudit(){if(confirm('Lancer un nouvel audit ? Les anciennes réponses restent dans le Sheet.')){state.auditId='';localStorage.removeItem('hop_linkedin_def2_audit_id');$('qrZone').classList.remove('has-qr');$('qrZone').innerHTML='<div>Le QR code apparaîtra ici après création de l’audit.</div>';setStatus('Nouvel audit prêt. Choisis un membre puis crée le QR code.');showScreen('projection');}}
-  function esc(t){return String(t||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}function attr(t){return String(t||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
-  document.querySelectorAll('.step-tab').forEach(btn=>btn.addEventListener('click',()=>showScreen(btn.dataset.screen)));$('diagnosticBtn').addEventListener('click',diagnostic);$('reloadMembersBtn').addEventListener('click',loadMembers);$('startMemberBtn').addEventListener('click',()=>{const p=$('memberSelect').value.split('|');setProfile(p[0],p[1]);});$('showGuestBtn').addEventListener('click',()=>$('guestBox').classList.toggle('hidden'));$('startGuestBtn').addEventListener('click',()=>{const n=$('guestName').value.trim(),j=$('guestJob').value.trim();if(!n){alert('Saisis au moins le nom de l’invité.');return;}setProfile(n,j||'Invité HOP');});$('makeQrBtn').addEventListener('click',makeQr);$('openFormBtn').addEventListener('click',()=>showScreen('formulaire'));$('showResultsBtn').addEventListener('click',()=>showScreen('resultats'));$('backProjectionBtn').addEventListener('click',()=>showScreen('projection'));$('newAuditBtn').addEventListener('click',resetAudit);$('refreshBtn').addEventListener('click',loadResults);$('sendBtn').addEventListener('click',sendResponse);$('copyBtn').addEventListener('click',async()=>{await loadResults();try{await navigator.clipboard.writeText(summary());$('copyMsg').textContent='Synthèse copiée.';}catch(e){$('copyMsg').textContent=summary();}});
-  document.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>{const q=btn.closest('.q');q.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}));document.querySelectorAll('.action-choice').forEach(btn=>btn.addEventListener('click',()=>btn.classList.toggle('selected')));document.querySelectorAll('select[data-other]').forEach(sel=>sel.addEventListener('change',()=>{const box=$(sel.dataset.other);if(sel.value==='AUTRE')box.classList.add('show');else box.classList.remove('show');}));
-  document.querySelectorAll('.mic-btn').forEach(btn=>btn.addEventListener('click',()=>{const target=$(btn.dataset.target),SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('La dictée vocale n’est pas disponible sur ce navigateur.');return;}const rec=new SR();rec.lang='fr-FR';rec.interimResults=false;rec.maxAlternatives=1;btn.classList.add('listening');btn.textContent='🎙️ Écoute...';rec.onresult=e=>{target.value=(target.value?target.value+' ':'')+e.results[0][0].transcript;};rec.onerror=()=>alert('La dictée n’a pas fonctionné.');rec.onend=()=>{btn.classList.remove('listening');btn.textContent='🎙️ Micro';};rec.start();}));
-  const params=new URLSearchParams(window.location.search);if(params.get('mode')==='form'){state.auditId=dec(params.get('audit'));setProfile(dec(params.get('name')),dec(params.get('job'));showScreen('formulaire');}else{syncProfile();diagnostic().then(loadMembers);}
+  const state = {
+    profileName:'',
+    profileJob:'',
+    responses: JSON.parse(localStorage.getItem('hop_linkedin_maquette_responses') || '[]')
+  };
+
+  const demoMembers = [
+    ['Laurence Borras','L’Rénov IA Studio'],
+    ['Nom membre HOP','Activité à compléter']
+  ];
+
+  function $(id){ return document.getElementById(id); }
+
+  function initials(name){
+    return String(name || '').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase() || '—';
+  }
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    $(id).classList.add('active');
+    const btn = document.querySelector('.nav-btn[data-screen="'+id+'"]');
+    if(btn) btn.classList.add('active');
+    if(id === 'resultats') renderResults();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function syncProfile(){
+    $('profileName').textContent = state.profileName || 'Aucun profil sélectionné';
+    $('profileJob').textContent = state.profileJob || 'Choisis un membre ou saisis un invité.';
+    $('avatar').textContent = initials(state.profileName);
+    $('formProfileName').textContent = state.profileName || 'Profil audité';
+    $('formProfileJob').textContent = state.profileJob || '—';
+    $('formAvatar').textContent = initials(state.profileName);
+    $('profileResult').textContent = state.profileName ? 'OK' : '—';
+    $('makeQrBtn').disabled = !state.profileName;
+    $('openFormBtn').disabled = !state.profileName;
+  }
+
+  function setProfile(name, job){
+    state.profileName = name || '';
+    state.profileJob = job || '';
+    syncProfile();
+    resetQrOnly();
+  }
+
+  function loadDemoMembers(){
+    const select = $('memberSelect');
+    select.innerHTML = '<option value="">Choisir un membre</option>' + demoMembers.map(m =>
+      '<option value="'+escapeAttr(m[0])+'|'+escapeAttr(m[1])+'">'+escapeHtml(m[0])+' · '+escapeHtml(m[1])+'</option>'
+    ).join('');
+  }
+
+  function resetQrOnly(){
+    $('qrBox').classList.remove('ready');
+    $('qrBox').innerHTML = '<div>Le QR code apparaîtra ici après création de l’audit.</div>';
+  }
+
+  function makeQr(){
+    if(!state.profileName){
+      alert('Choisis un membre ou saisis un invité.');
+      return;
+    }
+    const base = window.location.href.split('#')[0].split('?')[0];
+    const url = base + '?mode=form&name=' + encodeURIComponent(state.profileName) + '&job=' + encodeURIComponent(state.profileJob);
+    const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=' + encodeURIComponent(url);
+
+    $('qrBox').classList.add('ready');
+    $('qrBox').innerHTML =
+      '<img src="'+qr+'" alt="QR code">' +
+      '<div><h3>Scanner pour répondre</h3>' +
+      '<p>Tout le groupe scanne ce QR code depuis son téléphone.</p>' +
+      '<div class="link-box">'+escapeHtml(url)+'</div>' +
+      '<button class="btn secondary" id="copyLinkBtn" type="button">Copier le lien</button></div>';
+
+    $('copyLinkBtn').addEventListener('click', async function(){
+      try { await navigator.clipboard.writeText(url); this.textContent = 'Lien copié'; }
+      catch(e){ alert(url); }
+    });
+  }
+
+  function getScore(){
+    let total = 0;
+    let answered = 0;
+    document.querySelectorAll('.question[data-question]').forEach(q=>{
+      const selected = q.querySelector('.choice.selected');
+      if(selected){
+        total += Number(selected.dataset.value);
+        answered += 1;
+      }
+    });
+    return {total, answered};
+  }
+
+  function getActions(){
+    return Array.from(document.querySelectorAll('.action-choice.selected')).map(b=>b.dataset.action);
+  }
+
+  function selectValue(selectId, textareaId){
+    const select = $(selectId);
+    const textarea = $(textareaId);
+    if(select.value === 'AUTRE') return textarea.value.trim();
+    return select.value || '';
+  }
+
+  function clearForm(){
+    $('participantName').value = '';
+    ['rassure','bloque','ideePost','action'].forEach(id => $(id).value = '');
+    ['rassureSelect','bloqueSelect','ideePostSelect','actionSelect'].forEach(id => $(id).value = '');
+    document.querySelectorAll('.other-box').forEach(b=>b.classList.remove('show'));
+    document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));
+    document.querySelectorAll('.action-choice').forEach(b=>b.classList.remove('selected'));
+  }
+
+  function saveResponses(){
+    localStorage.setItem('hop_linkedin_maquette_responses', JSON.stringify(state.responses));
+  }
+
+  function renderResults(){
+    const count = state.responses.length;
+    const avg = count ? state.responses.reduce((s,r)=>s+r.score,0)/count : 0;
+    const help = state.responses.reduce((s,r)=>s+r.actions.length,0);
+
+    $('countResult').textContent = count;
+    $('avgResult').textContent = avg.toFixed(1);
+    $('helpResult').textContent = help;
+    $('profileResult').textContent = state.profileName ? 'OK' : '—';
+
+    const body = $('responsesBody');
+    body.innerHTML = '';
+    if(!count){
+      body.innerHTML = '<tr><td colspan="7">Aucune réponse pour le moment.</td></tr>';
+      return;
+    }
+
+    state.responses.forEach(r=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>'+escapeHtml(r.participant)+'</td>' +
+        '<td><strong>'+r.score.toFixed(1)+'/20</strong></td>' +
+        '<td>'+escapeHtml(r.actions.join(', '))+'</td>' +
+        '<td>'+escapeHtml(r.rassure)+'</td>' +
+        '<td>'+escapeHtml(r.bloque)+'</td>' +
+        '<td>'+escapeHtml(r.ideePost)+'</td>' +
+        '<td>'+escapeHtml(r.action)+'</td>';
+      body.appendChild(tr);
+    });
+  }
+
+  function buildSummary(){
+    const count = state.responses.length;
+    const avg = count ? state.responses.reduce((s,r)=>s+r.score,0)/count : 0;
+    const lines = [
+      'Boost LinkedIn collectif — HOP! Blanquefort',
+      'Profil audité : ' + (state.profileName || '—') + ' — ' + (state.profileJob || ''),
+      'Réponses : ' + count,
+      'Moyenne : ' + avg.toFixed(1) + '/20',
+      '',
+      'Ce qui fonctionne déjà :'
+    ];
+    state.responses.forEach(r=>{ if(r.rassure) lines.push('- ' + r.rassure); });
+    lines.push('', 'Freins ou manques :');
+    state.responses.forEach(r=>{ if(r.bloque) lines.push('- ' + r.bloque); });
+    lines.push('', 'Idées de posts :');
+    state.responses.forEach(r=>{ if(r.ideePost) lines.push('- ' + r.ideePost); });
+    lines.push('', 'Actions prioritaires :');
+    state.responses.forEach(r=>{ if(r.action) lines.push('- ' + r.action); });
+    return lines.join('\n');
+  }
+
+  function exportCsv(){
+    const header = ['profil','metier','participant','score','entraide','fonctionne','frein','idee_post','priorite'];
+    const rows = state.responses.map(r => [
+      state.profileName,state.profileJob,r.participant,r.score,r.actions.join(', '),r.rassure,r.bloque,r.ideePost,r.action
+    ]);
+    const csv = [header, ...rows].map(row => row.map(cell => '"' + String(cell || '').replace(/"/g,'""') + '"').join(';')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'boost-linkedin-hop-blanquefort.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function resetAll(){
+    if(confirm('Remettre à zéro cette session de test ?')){
+      state.responses = [];
+      saveResponses();
+      renderResults();
+      resetQrOnly();
+      showScreen('projection');
+    }
+  }
+
+  function escapeHtml(text){
+    return String(text || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  }
+  function escapeAttr(text){
+    return String(text || '').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>showScreen(btn.dataset.screen));
+  });
+
+  $('loadDemoMembersBtn').addEventListener('click', loadDemoMembers);
+
+  $('startMemberBtn').addEventListener('click', ()=>{
+    const value = $('memberSelect').value;
+    if(!value){ alert('Choisis un membre dans la liste.'); return; }
+    const parts = value.split('|');
+    setProfile(parts[0], parts[1]);
+  });
+
+  $('showGuestBtn').addEventListener('click', ()=>{
+    $('guestBox').classList.toggle('hidden');
+  });
+
+  $('startGuestBtn').addEventListener('click', ()=>{
+    const name = $('guestName').value.trim();
+    const job = $('guestJob').value.trim();
+    if(!name){ alert('Saisis au moins le nom de l’invité.'); return; }
+    setProfile(name, job || 'Invité HOP');
+  });
+
+  $('makeQrBtn').addEventListener('click', makeQr);
+  $('openFormBtn').addEventListener('click', ()=>showScreen('formulaire'));
+  $('showResultsBtn').addEventListener('click', ()=>showScreen('resultats'));
+  $('backProjectionBtn').addEventListener('click', ()=>showScreen('projection'));
+  $('resetBtn').addEventListener('click', resetAll);
+
+  document.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const q = btn.closest('.question');
+      q.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+
+  document.querySelectorAll('.action-choice').forEach(btn=>{
+    btn.addEventListener('click', ()=>btn.classList.toggle('selected'));
+  });
+
+  document.querySelectorAll('select[data-other]').forEach(select=>{
+    select.addEventListener('change', ()=>{
+      const box = $(select.dataset.other);
+      if(select.value === 'AUTRE') box.classList.add('show');
+      else box.classList.remove('show');
+    });
+  });
+
+  $('sendBtn').addEventListener('click', ()=>{
+    const score = getScore();
+    if(score.answered < 4){
+      $('formMsg').textContent = 'Il faut répondre aux 4 évaluations avant d’envoyer.';
+      $('formMsg').style.color = '#dc2626';
+      return;
+    }
+    state.responses.push({
+      participant: $('participantName').value.trim() || 'Anonyme',
+      score: score.total,
+      actions: getActions(),
+      rassure: selectValue('rassureSelect','rassure'),
+      bloque: selectValue('bloqueSelect','bloque'),
+      ideePost: selectValue('ideePostSelect','ideePost'),
+      action: selectValue('actionSelect','action')
+    });
+    saveResponses();
+    $('formMsg').textContent = 'Avis enregistré.';
+    $('formMsg').style.color = '#16a34a';
+    clearForm();
+    renderResults();
+  });
+
+  $('copyBtn').addEventListener('click', async ()=>{
+    const text = buildSummary();
+    try{
+      await navigator.clipboard.writeText(text);
+      $('copyBtn').textContent = 'Synthèse copiée';
+    }catch(e){
+      alert(text);
+    }
+  });
+
+  $('csvBtn').addEventListener('click', exportCsv);
+
+  document.querySelectorAll('.micro').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = $(btn.dataset.target);
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if(!SR){ alert('La dictée vocale n’est pas disponible sur ce navigateur.'); return; }
+      const rec = new SR();
+      rec.lang = 'fr-FR';
+      rec.interimResults = false;
+      btn.classList.add('listening');
+      btn.textContent = '🎙️ Écoute...';
+      rec.onresult = e => { target.value = (target.value ? target.value + ' ' : '') + e.results[0][0].transcript; };
+      rec.onerror = () => alert('La dictée n’a pas fonctionné.');
+      rec.onend = () => { btn.classList.remove('listening'); btn.textContent = '🎙️ Micro'; };
+      rec.start();
+    });
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('mode') === 'form'){
+    setProfile(decodeURIComponent(params.get('name') || ''), decodeURIComponent(params.get('job') || ''));
+    showScreen('formulaire');
+  }else{
+    loadDemoMembers();
+    syncProfile();
+    renderResults();
+  }
 })();
 </script>
 </body>
