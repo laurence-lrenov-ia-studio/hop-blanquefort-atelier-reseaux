@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HOP! Blanquefort · Audit collectif prospect</title>
+<title>HOP! Blanquefort · Boost LinkedIn collectif</title>
 <style>
 :root{
+  --li:#0077b5;
   --blue:#0096d6;
   --navy:#14204a;
   --navy2:#1e2d63;
@@ -40,7 +41,7 @@ header::after{
   width:240px;
   height:240px;
   border-radius:50%;
-  background:rgba(0,150,214,.18);
+  background:rgba(0,119,181,.22);
 }
 .logo-zone{
   position:relative;
@@ -67,30 +68,30 @@ header h1{
   position:relative;
   z-index:2;
   margin:0;
-  font-size:clamp(27px,6vw,52px);
-  line-height:1;
+  font-size:clamp(28px,6vw,56px);
+  line-height:.95;
   text-transform:uppercase;
   letter-spacing:.02em;
 }
-header h1 span{color:var(--blue)}
+header h1 span{color:#66d1ff}
 header p{
   position:relative;
   z-index:2;
   margin:10px auto 0;
-  max-width:760px;
-  color:rgba(255,255,255,.82);
+  max-width:840px;
+  color:rgba(255,255,255,.84);
   font-size:16px;
   line-height:1.5;
 }
 main{
-  max-width:1040px;
+  max-width:1100px;
   margin:0 auto;
-  padding:22px 16px 84px;
+  padding:22px 16px 86px;
 }
 .notice{
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  border-left:6px solid var(--orange);
+  background:#eff8ff;
+  border:1px solid #b9e6fe;
+  border-left:6px solid var(--li);
   border-radius:14px;
   padding:14px 16px;
   margin-bottom:16px;
@@ -114,7 +115,7 @@ main{
   box-shadow:0 2px 10px rgba(0,0,0,.08);
 }
 .tab.active{
-  background:var(--blue);
+  background:var(--li);
   color:white;
 }
 .screen{display:none}
@@ -131,7 +132,12 @@ main{
   grid-template-columns:1fr 1fr;
   gap:16px;
 }
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+@media(max-width:860px){.grid,.grid3{grid-template-columns:1fr}}
 label{
   display:block;
   font-weight:800;
@@ -154,14 +160,13 @@ textarea{min-height:88px;resize:vertical}
   font-weight:900;
   font-size:16px;
   cursor:pointer;
-  background:var(--blue);
+  background:var(--li);
   color:white;
   margin:8px 8px 8px 0;
 }
 .btn.secondary{background:var(--navy)}
 .btn.light{background:#eef4ff;color:var(--navy)}
 .btn.danger{background:var(--red)}
-.btn:disabled{opacity:.45;cursor:not-allowed}
 .small{
   font-size:13px;
   color:var(--muted);
@@ -212,8 +217,9 @@ textarea{min-height:88px;resize:vertical}
   grid-template-columns:repeat(5,1fr);
   gap:8px;
 }
-@media(max-width:760px){.score-row{grid-template-columns:1fr 1fr}} @media(max-width:420px){.score-row{grid-template-columns:1fr}}
-.choice{
+@media(max-width:760px){.score-row{grid-template-columns:1fr 1fr}} 
+@media(max-width:420px){.score-row{grid-template-columns:1fr}}
+.choice,.action-choice{
   border:2px solid #e4e7ec;
   border-radius:12px;
   padding:13px 8px;
@@ -223,7 +229,7 @@ textarea{min-height:88px;resize:vertical}
   font-weight:900;
   min-height:72px;
 }
-.choice small{
+.choice small,.action-choice small{
   display:block;
   font-weight:500;
   color:var(--muted);
@@ -235,18 +241,25 @@ textarea{min-height:88px;resize:vertical}
 .choice.selected.mid{border-color:var(--orange);background:#fef3c7;color:#92400e}
 .choice.selected.low{border-color:#fb7185;background:#ffe4e6;color:#9f1239}
 .choice.selected.bad{border-color:var(--red);background:#fee2e2;color:#991b1b}
-.result-number{
-  font-size:64px;
-  font-weight:900;
-  color:var(--blue);
-  line-height:1;
+.action-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+@media(max-width:860px){.action-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.action-grid{grid-template-columns:1fr}}
+.action-choice.selected{
+  border-color:var(--li);
+  background:#e0f2fe;
+  color:#075985;
 }
 .kpi-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:12px;
 }
-@media(max-width:720px){.kpi-grid{grid-template-columns:1fr}}
+@media(max-width:920px){.kpi-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.kpi-grid{grid-template-columns:1fr}}
 .kpi{
   background:#f8fafc;
   border-radius:16px;
@@ -259,10 +272,11 @@ textarea{min-height:88px;resize:vertical}
   font-weight:800;
 }
 .kpi-value{
-  font-size:34px;
+  font-size:32px;
   font-weight:900;
   color:var(--navy);
 }
+.table-wrap{overflow-x:auto}
 .table{
   width:100%;
   border-collapse:collapse;
@@ -270,6 +284,7 @@ textarea{min-height:88px;resize:vertical}
   background:white;
   border-radius:14px;
   overflow:hidden;
+  min-width:980px;
 }
 .table th,.table td{
   padding:10px;
@@ -277,16 +292,6 @@ textarea{min-height:88px;resize:vertical}
   text-align:left;
   font-size:14px;
   vertical-align:top;
-}
-footer{
-  position:fixed;
-  left:0;right:0;bottom:0;
-  background:var(--navy);
-  color:white;
-  padding:10px 14px;
-  text-align:center;
-  font-size:13px;
-  z-index:10;
 }
 .badge{
   display:inline-block;
@@ -298,26 +303,36 @@ footer{
   font-weight:800;
   margin:4px 4px 4px 0;
 }
+footer{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  background:var(--navy);
+  color:white;
+  padding:10px 14px;
+  text-align:center;
+  font-size:13px;
+  z-index:10;
+}
 </style>
 </head>
 <body>
 <header>
   <div class="logo-zone">
-    <!-- Ajoute ton logo dans le même dossier que ce HTML et nomme-le exactement : Logo Jivec.png -->
-    <img src="Logo Jivec.png" alt="Logo HOP Blanquefort" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-block';">
-    <div id="logoFallback" class="logo-placeholder" style="display:none;">Logo à ajouter : Logo Jivec.png</div>
+    <!-- Ajoute ton logo dans le même dossier que ce HTML et nomme-le exactement : logo.png -->
+    <img src="logo.png" alt="Logo HOP Blanquefort" onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='inline-block';">
+    <div id="logoFallback" class="logo-placeholder" style="display:none;">Logo à ajouter : logo.png</div>
   </div>
-  <h1>HOP! Club des entrepreneurs <span>Blanquefort</span></h1>
-  <p>Audit collectif orienté prospect · 5 niveaux : est-ce que le profil accroche, rassure et donne envie de recommander ?</p>
+  <h1>Boost <span>LinkedIn</span> collectif</h1>
+  <p>Un profil projeté, le groupe évalue en 5 niveaux, puis chacun propose une action concrète pour aider la visibilité du membre.</p>
 </header>
 
 <main>
   <div class="notice">
-    <strong>Objectif atelier :</strong> un membre est projeté, chaque participant répond en quelques minutes, puis on récupère une moyenne et des pistes concrètes pour améliorer l’accroche commerciale.
+    <strong>Format conseillé sur 1h :</strong> 4 profils maximum, 10 minutes par profil + 10 minutes d’actions collectives. Objectif : booster vraiment LinkedIn au lieu de survoler tous les réseaux.
   </div>
 
   <div class="tabs">
-    <button class="tab active" data-screen="projection">1 · Profil projeté</button>
+    <button class="tab active" data-screen="projection">1 · Profil LinkedIn</button>
     <button class="tab" data-screen="formulaire">2 · Avis participant</button>
     <button class="tab" data-screen="resultats">3 · Synthèse</button>
   </div>
@@ -325,7 +340,7 @@ footer{
   <section id="projection" class="screen active">
     <div class="card">
       <h2>Profil audité</h2>
-      <p class="small">Choisis un membre ou saisis un invité. C’est ce profil que tout le groupe évalue.</p>
+      <p class="small">Choisis un membre ou saisis un invité. Le groupe évalue uniquement son profil LinkedIn.</p>
 
       <div class="grid">
         <div>
@@ -354,19 +369,19 @@ footer{
       <div class="profile-job" id="profileJob">L’Rénov IA Studio</div>
       <div class="audit-angle">
         <strong>Question centrale :</strong><br>
-        “Si je tombe sur ce profil comme prospect, est-ce que je comprends vite, est-ce que j’ai confiance, et est-ce que j’ai envie d’entrer en contact ?”
+        “En voyant ce profil LinkedIn, est-ce que je comprends vite l’activité, est-ce que j’ai confiance, et est-ce que j’aurais envie de recommander cette personne ?”
       </div>
       <div style="margin-top:14px">
         <button class="btn secondary" id="openFormBtn" type="button">Ouvrir l’avis participant</button>
         <button class="btn" id="showResultsBtn" type="button">Voir la synthèse</button>
       </div>
-      <p class="small">Plus tard, ce bouton deviendra un QR code à scanner. Pour l’instant, on valide le parcours et les questions.</p>
+      <p class="small">Pour l’atelier réel : tu projettes LinkedIn sur l’écran. Les participants répondent sur téléphone sans quitter le formulaire.</p>
     </div>
   </section>
 
   <section id="formulaire" class="screen">
     <div class="card">
-      <h2>Ton avis prospect</h2>
+      <h2>Ton avis sur le LinkedIn projeté</h2>
       <div class="profile-box">
         <div class="profile-title" id="formProfileName">Laurence Borras</div>
         <div class="profile-job" id="formProfileJob">L’Rénov IA Studio</div>
@@ -375,65 +390,76 @@ footer{
       <label for="participantName">Ton prénom / nom</label>
       <input id="participantName" placeholder="Ex : Sophie">
 
-      <div class="q" data-question="accroche">
-        <h3>1. Accroche immédiate</h3>
-        <p>En quelques secondes, est-ce que je comprends qui est la personne, ce qu’elle propose et pour qui ?</p>
+      <div class="q" data-question="titre">
+        <h3>1. Titre LinkedIn</h3>
+        <p>Est-ce qu’on comprend vite ce que la personne fait, pour qui, et avec quelle valeur ?</p>
         <div class="score-row">
-          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Je ne comprends pas</small></button>
-          <button class="choice low" data-value="1.25" type="button">Très peu<small>Il faut chercher</small></button>
-          <button class="choice mid" data-value="2.5" type="button">À moitié<small>C’est flou mais possible</small></button>
-          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>C’est presque clair</small></button>
-          <button class="choice top" data-value="5" type="button">Oui, clairement<small>L’accroche est directe</small></button>
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Titre flou</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Pas assez ciblé</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Compréhensible mais faible</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Bonne base</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Titre efficace</small></button>
         </div>
       </div>
 
-      <div class="q" data-question="confiance">
-        <h3>2. Confiance</h3>
-        <p>Est-ce que la présence en ligne donne une impression sérieuse, rassurante et professionnelle ?</p>
+      <div class="q" data-question="photo">
+        <h3>2. Photo + bannière</h3>
+        <p>Est-ce que l’identité visuelle inspire confiance et donne une première impression professionnelle ?</p>
         <div class="score-row">
-          <button class="choice bad" data-value="0" type="button">Pas rassuré<small>Il manque des preuves</small></button>
-          <button class="choice low" data-value="1.25" type="button">Peu rassuré<small>Trop d’incertitudes</small></button>
-          <button class="choice mid" data-value="2.5" type="button">Moyen<small>Il y a du bon, mais pas assez</small></button>
-          <button class="choice good" data-value="3.75" type="button">Plutôt rassuré<small>Quelques preuves utiles</small></button>
-          <button class="choice top" data-value="5" type="button">Très rassurant<small>On sent le sérieux</small></button>
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas pro / absent</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Faible impact</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Correct mais neutre</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Rassurant</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Très bon impact</small></button>
         </div>
       </div>
 
-      <div class="q" data-question="contact">
-        <h3>3. Envie de contacter</h3>
-        <p>Après avoir vu le profil, est-ce que j’aurais le réflexe de contacter ou recommander cette personne ?</p>
+      <div class="q" data-question="preuve">
+        <h3>3. Preuves et crédibilité</h3>
+        <p>Le profil montre-t-il des preuves : expériences, réalisations, recommandations, publications, résultats ?</p>
         <div class="score-row">
-          <button class="choice bad" data-value="0" type="button">Non<small>Je ne contacterais pas</small></button>
+          <button class="choice bad" data-value="0" type="button">Pas du tout<small>Pas de preuve</small></button>
+          <button class="choice low" data-value="1.25" type="button">Très peu<small>Trop léger</small></button>
+          <button class="choice mid" data-value="2.5" type="button">À moitié<small>Quelques éléments</small></button>
+          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>Crédible</small></button>
+          <button class="choice top" data-value="5" type="button">Oui clairement<small>Très rassurant</small></button>
+        </div>
+      </div>
+
+      <div class="q" data-question="recommandation">
+        <h3>4. Envie de recommander</h3>
+        <p>Après avoir vu le profil LinkedIn, est-ce que j’aurais envie de contacter ou recommander cette personne ?</p>
+        <div class="score-row">
+          <button class="choice bad" data-value="0" type="button">Non<small>Pas assez clair</small></button>
           <button class="choice low" data-value="1.25" type="button">Peu probable<small>Il manque un déclic</small></button>
-          <button class="choice mid" data-value="2.5" type="button">Peut-être<small>Avec une amélioration ciblée</small></button>
+          <button class="choice mid" data-value="2.5" type="button">Peut-être<small>Avec amélioration</small></button>
           <button class="choice good" data-value="3.75" type="button">Probable<small>Je pourrais y penser</small></button>
           <button class="choice top" data-value="5" type="button">Oui<small>Je pourrais recommander</small></button>
         </div>
       </div>
 
-      <div class="q" data-question="cible">
-        <h3>4. Cible prospect identifiable</h3>
-        <p>Est-ce qu’on comprend facilement quel type de prospect pourrait être intéressé ?</p>
-        <div class="score-row">
-          <button class="choice bad" data-value="0" type="button">Non<small>La cible est floue</small></button>
-          <button class="choice low" data-value="1.25" type="button">Très peu<small>On devine à peine</small></button>
-          <button class="choice mid" data-value="2.5" type="button">Un peu<small>On comprend partiellement</small></button>
-          <button class="choice good" data-value="3.75" type="button">Plutôt oui<small>La cible se dessine</small></button>
-          <button class="choice top" data-value="5" type="button">Oui<small>La cible est évidente</small></button>
+      <div class="q">
+        <h3>5. Action d’entraide LinkedIn</h3>
+        <p>Sans quitter le formulaire maintenant, indique ce que tu peux faire pour aider ce profil après l’atelier.</p>
+        <div class="action-grid">
+          <button class="action-choice" data-action="connexion" type="button">Me connecter<small>Je peux envoyer une demande</small></button>
+          <button class="action-choice" data-action="commentaire" type="button">Commenter<small>Je peux commenter un post</small></button>
+          <button class="action-choice" data-action="recommandation" type="button">Recommander<small>Je peux penser à lui/elle</small></button>
+          <button class="action-choice" data-action="idee_post" type="button">Idée de post<small>Je peux suggérer un sujet</small></button>
         </div>
       </div>
 
-      <label for="rassure">Ce qui accroche / rassure</label>
-      <textarea id="rassure" placeholder="Ex : message clair, photo professionnelle, avis clients, réalisations visibles, ton humain..."></textarea>
+      <label for="rassure">Ce qui fonctionne déjà sur le profil</label>
+      <textarea id="rassure" placeholder="Ex : titre clair, photo pro, spécialité visible, preuves, ton humain..."></textarea>
 
-      <label for="bloque">Ce qui freine le passage à l’action</label>
-      <textarea id="bloque" placeholder="Ex : titre trop flou, manque de preuves, pas d’avis, pas de spécialité, page inactive..."></textarea>
+      <label for="bloque">Ce qui freine ou manque</label>
+      <textarea id="bloque" placeholder="Ex : titre trop vague, pas de bannière, aucune publication, pas de recommandations..."></textarea>
 
-      <label for="prospect">Quel prospect pourrait être ciblé grâce à cette amélioration ?</label>
-      <textarea id="prospect" placeholder="Ex : particuliers en rénovation, dirigeants TPE, commerçants locaux, parents, investisseurs..."></textarea>
+      <label for="ideePost">Une idée de post LinkedIn pour cette personne</label>
+      <textarea id="ideePost" placeholder="Ex : avant/après client, conseil métier, erreur fréquente, coulisses, cas client..."></textarea>
 
       <label for="action">Action prioritaire à faire cette semaine</label>
-      <textarea id="action" placeholder="Ex : refaire le titre, ajouter 5 photos, publier un cas client, demander 3 avis, clarifier l’offre..."></textarea>
+      <textarea id="action" placeholder="Ex : refaire le titre, ajouter une bannière, publier un cas client, demander 2 recommandations..."></textarea>
 
       <button class="btn" id="sendBtn" type="button">Envoyer mon avis</button>
       <button class="btn light" id="backProjectionBtn" type="button">Retour projection</button>
@@ -443,7 +469,7 @@ footer{
 
   <section id="resultats" class="screen">
     <div class="card">
-      <h2>Synthèse collective</h2>
+      <h2>Synthèse LinkedIn collective</h2>
       <div class="kpi-grid">
         <div class="kpi">
           <div class="kpi-title">Réponses</div>
@@ -454,7 +480,11 @@ footer{
           <div class="kpi-value" id="avgResult">0</div>
         </div>
         <div class="kpi">
-          <div class="kpi-title">Potentiel prospect</div>
+          <div class="kpi-title">Actions d’entraide</div>
+          <div class="kpi-value" id="helpResult">0</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-title">Potentiel</div>
           <div class="kpi-value" id="potentialResult">—</div>
         </div>
       </div>
@@ -466,27 +496,30 @@ footer{
 
     <div class="card">
       <h2>Retours reçus</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Participant</th>
-            <th>Score</th>
-            <th>Accroche / rassure</th>
-            <th>Frein</th>
-            <th>Prospect ciblé</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="responsesBody">
-          <tr><td colspan="6">Aucune réponse pour le moment.</td></tr>
-        </tbody>
-      </table>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Score</th>
+              <th>Action d’entraide</th>
+              <th>Fonctionne</th>
+              <th>Frein</th>
+              <th>Idée de post</th>
+              <th>Priorité</th>
+            </tr>
+          </thead>
+          <tbody id="responsesBody">
+            <tr><td colspan="7">Aucune réponse pour le moment.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
-  Version réservée à HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio
+  Atelier Boost LinkedIn · HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio
 </footer>
 
 <script>
@@ -494,7 +527,7 @@ footer{
   const state = {
     profileName: 'Laurence Borras',
     profileJob: 'L’Rénov IA Studio',
-    responses: JSON.parse(localStorage.getItem('hop_audit_prospect_responses') || '[]')
+    responses: JSON.parse(localStorage.getItem('hop_linkedin_boost_responses') || '[]')
   };
 
   function $(id){ return document.getElementById(id); }
@@ -517,7 +550,7 @@ footer{
   }
 
   function saveResponses(){
-    localStorage.setItem('hop_audit_prospect_responses', JSON.stringify(state.responses));
+    localStorage.setItem('hop_linkedin_boost_responses', JSON.stringify(state.responses));
   }
 
   function getScore(){
@@ -533,13 +566,28 @@ footer{
     return { total, answered };
   }
 
+  function getActions(){
+    return Array.from(document.querySelectorAll('.action-choice.selected')).map(b => b.dataset.action);
+  }
+
+  function actionLabel(value){
+    const map = {
+      connexion:'Me connecter',
+      commentaire:'Commenter un post',
+      recommandation:'Recommander',
+      idee_post:'Proposer une idée de post'
+    };
+    return map[value] || value;
+  }
+
   function clearForm(){
     $('participantName').value = '';
     $('rassure').value = '';
     $('bloque').value = '';
-    $('prospect').value = '';
+    $('ideePost').value = '';
     $('action').value = '';
     document.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.action-choice').forEach(b => b.classList.remove('selected'));
   }
 
   function potentialLabel(avg){
@@ -552,14 +600,17 @@ footer{
   function renderResults(){
     const count = state.responses.length;
     const avg = count ? state.responses.reduce((s,r)=>s+r.score,0) / count : 0;
+    const help = state.responses.reduce((s,r)=>s+r.helpActions.length,0);
+
     $('countResult').textContent = count;
     $('avgResult').textContent = avg.toFixed(1);
+    $('helpResult').textContent = help;
     $('potentialResult').textContent = potentialLabel(avg);
 
     const body = $('responsesBody');
     body.innerHTML = '';
     if(!count){
-      body.innerHTML = '<tr><td colspan="6">Aucune réponse pour le moment.</td></tr>';
+      body.innerHTML = '<tr><td colspan="7">Aucune réponse pour le moment.</td></tr>';
       return;
     }
 
@@ -568,9 +619,10 @@ footer{
       tr.innerHTML =
         '<td>' + escapeHtml(r.participant || 'Anonyme') + '</td>' +
         '<td><strong>' + r.score.toFixed(1) + '/20</strong></td>' +
+        '<td>' + escapeHtml(r.helpActions.map(actionLabel).join(', ')) + '</td>' +
         '<td>' + escapeHtml(r.rassure) + '</td>' +
         '<td>' + escapeHtml(r.bloque) + '</td>' +
-        '<td>' + escapeHtml(r.prospect) + '</td>' +
+        '<td>' + escapeHtml(r.ideePost) + '</td>' +
         '<td>' + escapeHtml(r.action) + '</td>';
       body.appendChild(tr);
     });
@@ -585,23 +637,26 @@ footer{
   function buildSummary(){
     const count = state.responses.length;
     const avg = count ? state.responses.reduce((s,r)=>s+r.score,0) / count : 0;
+    const help = state.responses.reduce((s,r)=>s+r.helpActions.length,0);
+
     let lines = [];
-    lines.push('Audit collectif HOP! Blanquefort');
+    lines.push('Boost LinkedIn collectif — HOP! Blanquefort');
     lines.push('Profil audité : ' + state.profileName + ' — ' + state.profileJob);
     lines.push('Réponses : ' + count);
     lines.push('Moyenne : ' + avg.toFixed(1) + '/20');
-    lines.push('Potentiel prospect : ' + potentialLabel(avg));
+    lines.push('Actions d’entraide proposées : ' + help);
+    lines.push('Potentiel LinkedIn : ' + potentialLabel(avg));
     lines.push('');
-    lines.push('Ce qui accroche / rassure :');
+    lines.push('Ce qui fonctionne déjà :');
     state.responses.forEach(r => { if(r.rassure) lines.push('- ' + r.rassure); });
     lines.push('');
-    lines.push('Ce qui freine :');
+    lines.push('Freins ou manques :');
     state.responses.forEach(r => { if(r.bloque) lines.push('- ' + r.bloque); });
     lines.push('');
-    lines.push('Prospects ciblés possibles :');
-    state.responses.forEach(r => { if(r.prospect) lines.push('- ' + r.prospect); });
+    lines.push('Idées de posts :');
+    state.responses.forEach(r => { if(r.ideePost) lines.push('- ' + r.ideePost); });
     lines.push('');
-    lines.push('Actions prioritaires proposées :');
+    lines.push('Actions prioritaires :');
     state.responses.forEach(r => { if(r.action) lines.push('- ' + r.action); });
     return lines.join('\n');
   }
@@ -641,10 +696,16 @@ footer{
     });
   });
 
+  document.querySelectorAll('.action-choice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('selected');
+    });
+  });
+
   $('sendBtn').addEventListener('click', () => {
     const score = getScore();
     if(score.answered < 4){
-      $('formMsg').textContent = 'Il faut répondre aux 4 questions avant d’envoyer.';
+      $('formMsg').textContent = 'Il faut répondre aux 4 évaluations avant d’envoyer.';
       $('formMsg').style.color = '#dc2626';
       return;
     }
@@ -655,9 +716,10 @@ footer{
       profileJob: state.profileJob,
       participant: $('participantName').value.trim() || 'Anonyme',
       score: score.total,
+      helpActions: getActions(),
       rassure: $('rassure').value.trim(),
       bloque: $('bloque').value.trim(),
-      prospect: $('prospect').value.trim(),
+      ideePost: $('ideePost').value.trim(),
       action: $('action').value.trim()
     });
     saveResponses();
@@ -678,16 +740,17 @@ footer{
   });
 
   $('csvBtn').addEventListener('click', () => {
-    const header = ['date','profil','metier','participant','score_sur_20','rassure','bloque','prospect','action'];
+    const header = ['date','profil','metier','participant','score_sur_20','actions_entraide','fonctionne','frein','idee_post','action_prioritaire'];
     const rows = state.responses.map(r => [
-      r.date, r.profileName, r.profileJob, r.participant, r.score, r.rassure, r.bloque, r.prospect, r.action
+      r.date, r.profileName, r.profileJob, r.participant, r.score,
+      r.helpActions.map(actionLabel).join(', '), r.rassure, r.bloque, r.ideePost, r.action
     ]);
     const csv = [header, ...rows].map(row => row.map(cell => '"' + String(cell || '').replace(/"/g,'""') + '"').join(';')).join('\n');
     const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'audit-hop-blanquefort-prospect.csv';
+    a.download = 'boost-linkedin-hop-blanquefort.csv';
     document.body.appendChild(a);
     a.click();
     a.remove();
