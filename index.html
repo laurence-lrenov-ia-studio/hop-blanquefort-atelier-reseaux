@@ -106,8 +106,18 @@ async function getResults(){ if(!state.sessionId){ alert('Crée ou ouvre d’abo
 function list(items, empty){ return items.filter(Boolean).length?`<ul>${items.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<p>${empty}</p>`; }
 async function renderResults(){ showLoader('Résultats…'); try{ const data=await getResults(); const rows=data.responses||[]; const avg=rows.length?Math.round(rows.map(average).reduce((a,b)=>a+b,0)/rows.length):0; $('resultsBox').innerHTML=`<div class="resultTop"><div class="stat"><b>${rows.length}</b><span>réponses</span></div><div class="stat"><b>${avg}</b><span>moyenne /10</span></div><div class="stat"><b>${rows.filter(r=>average(r)>=7).length}</b><span>avis favorables</span></div></div><h2>Ce qui rassure</h2>${list(rows.map(r=>r.rassure),'Aucun verbatim.')}<h2 style="margin-top:22px">Ce qui bloque</h2>${list(rows.map(r=>r.bloque),'Aucun blocage.')}<h2 style="margin-top:22px">Actions proposées</h2>${list(rows.map(r=>r.action_prioritaire),'Aucune action.')}`; state.lastResults={rows,avg}; }catch(e){ $('resultsBox').innerHTML=`<div class="notice danger">${esc(e.message)}</div>`; } hideLoader(); }
 function copySummary(){ const txt=$('resultsBox').innerText.trim(); navigator.clipboard?.writeText(txt); alert('Synthèse copiée.'); }
-function exportCsv(){ const rows=state.lastResults?.rows||[]; const head=['participant','reflexe','linkedin','instagram','google','moyenne','rassure','bloque','action_prioritaire']; const csv=[head.join(';'),...rows.map(r=>head.map(h=>'"'+String(h==='moyenne'?average(r):(r[h]||'')).replaceAll('"','""')+'"').join(';'))].join('
-'); const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='audit-hop-blanquefort.csv'; a.click(); }
+function exportCsv(){
+  const rows = state.lastResults?.rows || [];
+  const head = ['participant','reflexe','linkedin','instagram','google','moyenne','rassure','bloque','action_prioritaire'];
+  const csv = [
+    head.join(';'),
+    ...rows.map(r => head.map(h => '"' + String(h === 'moyenne' ? average(r) : (r[h] || '')).replaceAll('"','""') + '"').join(';'))
+  ].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = 'audit-hop-blanquefort.csv';
+  a.click();
+}
 function bind(){ document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setView(b.dataset.view)); $('reloadMembers').onclick=loadMembers; $('guestBtn').onclick=()=>{state.guest=!state.guest;$('guestFields').style.display=state.guest?'block':'none';renderProfile();}; ['memberSelect','guestName','guestJob'].forEach(id=>$(id).addEventListener('input',renderProfile)); $('createAudit').onclick=createAudit; $('openParticipant').onclick=()=>setView('participant'); $('copyLink').onclick=()=>{navigator.clipboard?.writeText(state.link);alert('Lien copié.')}; document.querySelectorAll('.scoreBtns').forEach(g=>g.querySelectorAll('.scoreBtn').forEach(btn=>btn.onclick=()=>pickScore(g.dataset.key,btn.dataset.val,btn))); $('submitAnswer').onclick=submitAnswer; $('refreshResults').onclick=async()=>{setView('results');await renderResults();}; $('copySummary').onclick=copySummary; $('exportCsv').onclick=exportCsv; }
 bind(); loadMembers(); loadSessionFromUrl();
 </script>
