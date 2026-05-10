@@ -538,7 +538,7 @@ th{
         </div>
 
         <div class="hint">
-          Cette version est volontairement stable : tous les boutons doivent fonctionner. Le branchement Sheet se fait après validation de cette mise en page.
+          Version branchée au Sheet : les membres se chargent depuis MEMBRES, les réponses arrivent dans LINKEDIN_REPONSES.
         </div>
       </div>
 
@@ -748,25 +748,82 @@ th{
   </section>
 </main>
 
-<div class="footer">Version réservée à HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio</div>
+<div class="footer">Atelier Boost LinkedIn · HOP! Club des entrepreneurs Blanquefort · Créée par L’Rénov IA Studio</div>
+
 
 <script>
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbww7rInrpo21HZaSrKFur6wtpjN9YoyxWCkg1Q79q2VEXLgvX553O1O7hjQHWcnQKtj/exec";
+
 (function(){
   const state = {
     profileName:'',
     profileJob:'',
-    responses: JSON.parse(localStorage.getItem('hop_linkedin_maquette_responses') || '[]')
+    auditId: localStorage.getItem('hop_linkedin_validated_audit_id') || '',
+    responses: []
   };
-
-  const demoMembers = [
-    ['Laurence Borras','L’Rénov IA Studio'],
-    ['Nom membre HOP','Activité à compléter']
-  ];
 
   function $(id){ return document.getElementById(id); }
 
   function initials(name){
     return String(name || '').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase() || '—';
+  }
+
+  function enc(v){ return encodeURIComponent(v || ''); }
+  function dec(v){ try { return decodeURIComponent(v || ''); } catch(e){ return v || ''; } }
+
+  function escapeHtml(text){
+    return String(text || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  }
+
+  function escapeAttr(text){
+    return String(text || '').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  }
+
+  function setStatus(message, isError){
+    let hint = document.querySelector('.hint');
+    if(!hint) return;
+    hint.textContent = message;
+    hint.style.background = isError ? '#fff7ed' : '#eff8ff';
+    hint.style.borderColor = isError ? '#fed7aa' : '#b9e6fe';
+    hint.style.color = isError ? '#9a3412' : '#075985';
+  }
+
+  function api(action, params){
+    params = params || {};
+    return new Promise((resolve, reject) => {
+      const cb = 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      params.action = action;
+      params.callback = cb;
+
+      const url = WEBAPP_URL + '?' + Object.keys(params)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k] == null ? '' : params[k]))
+        .join('&');
+
+      const tag = document.createElement('script');
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('Timeout Apps Script'));
+      }, 15000);
+
+      function cleanup(){
+        clearTimeout(timer);
+        delete window[cb];
+        if(tag && tag.parentNode) tag.parentNode.removeChild(tag);
+      }
+
+      window[cb] = data => {
+        cleanup();
+        resolve(data);
+      };
+
+      tag.onerror = () => {
+        cleanup();
+        reject(new Error('Erreur de chargement Apps Script'));
+      };
+
+      tag.src = url;
+      document.body.appendChild(tag);
+    });
   }
 
   function showScreen(id){
@@ -775,7 +832,7 @@ th{
     $(id).classList.add('active');
     const btn = document.querySelector('.nav-btn[data-screen="'+id+'"]');
     if(btn) btn.classList.add('active');
-    if(id === 'resultats') renderResults();
+    if(id === 'resultats') loadResults();
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
@@ -794,15 +851,57 @@ th{
   function setProfile(name, job){
     state.profileName = name || '';
     state.profileJob = job || '';
+    state.auditId = '';
+    localStorage.removeItem('hop_linkedin_validated_audit_id');
     syncProfile();
     resetQrOnly();
+    setStatus('Profil prêt. Clique sur “Créer le QR code” pour lancer l’audit.');
   }
 
-  function loadDemoMembers(){
+  async function loadMembers(){
     const select = $('memberSelect');
-    select.innerHTML = '<option value="">Choisir un membre</option>' + demoMembers.map(m =>
-      '<option value="'+escapeAttr(m[0])+'|'+escapeAttr(m[1])+'">'+escapeHtml(m[0])+' · '+escapeHtml(m[1])+'</option>'
-    ).join('');
+    select.innerHTML = '<option value="">Chargement des membres...</option>';
+    select.disabled = true;
+    setStatus('Chargement des membres depuis le Google Sheet...');
+
+    try{
+      const res = await api('get_members');
+      if(!res.ok) throw new Error(res.error || 'Erreur inconnue');
+
+      const members = res.members || [];
+      if(!members.length){
+        select.innerHTML = '<option value="">Aucun membre trouvé</option>';
+        setStatus('Aucun membre trouvé dans l’onglet MEMBRES. Vérifie qu’il existe une colonne Nom.', true);
+        return;
+      }
+
+      select.innerHTML = '<option value="">Choisir un membre</option>' + members.map(m =>
+        '<option value="'+escapeAttr(m.nom)+'|'+escapeAttr(m.metier || '')+'">'+escapeHtml(m.nom)+' · '+escapeHtml(m.metier || '')+'</option>'
+      ).join('');
+
+      select.disabled = false;
+      setStatus(members.length + ' membres chargés depuis le Sheet.');
+    }catch(err){
+      select.innerHTML = '<option value="">Erreur de chargement</option>';
+      setStatus('Erreur chargement membres : ' + err.message + '. Vérifie le déploiement Apps Script en nouvelle version.', true);
+    }
+  }
+
+  async function startAuditIfNeeded(){
+    if(state.auditId) return state.auditId;
+    if(!state.profileName) throw new Error('Aucun profil sélectionné');
+
+    const res = await api('start_audit', {
+      profile_name: state.profileName,
+      profile_job: state.profileJob,
+      source: 'html_maquette_validee'
+    });
+
+    if(!res.ok) throw new Error(res.error || 'Erreur création audit');
+
+    state.auditId = res.audit_id;
+    localStorage.setItem('hop_linkedin_validated_audit_id', state.auditId);
+    return state.auditId;
   }
 
   function resetQrOnly(){
@@ -810,40 +909,64 @@ th{
     $('qrBox').innerHTML = '<div>Le QR code apparaîtra ici après création de l’audit.</div>';
   }
 
-  function makeQr(){
+  function formUrl(){
+    const base = window.location.href.split('#')[0].split('?')[0];
+    return base
+      + '?mode=form'
+      + '&audit=' + enc(state.auditId)
+      + '&name=' + enc(state.profileName)
+      + '&job=' + enc(state.profileJob);
+  }
+
+  async function makeQr(){
     if(!state.profileName){
       alert('Choisis un membre ou saisis un invité.');
       return;
     }
-    const base = window.location.href.split('#')[0].split('?')[0];
-    const url = base + '?mode=form&name=' + encodeURIComponent(state.profileName) + '&job=' + encodeURIComponent(state.profileJob);
-    const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=' + encodeURIComponent(url);
 
-    $('qrBox').classList.add('ready');
-    $('qrBox').innerHTML =
-      '<img src="'+qr+'" alt="QR code">' +
-      '<div><h3>Scanner pour répondre</h3>' +
-      '<p>Tout le groupe scanne ce QR code depuis son téléphone.</p>' +
-      '<div class="link-box">'+escapeHtml(url)+'</div>' +
-      '<button class="btn secondary" id="copyLinkBtn" type="button">Copier le lien</button></div>';
+    try{
+      setStatus('Création de l’audit en cours...');
+      await startAuditIfNeeded();
 
-    $('copyLinkBtn').addEventListener('click', async function(){
-      try { await navigator.clipboard.writeText(url); this.textContent = 'Lien copié'; }
-      catch(e){ alert(url); }
-    });
+      const url = formUrl();
+      const qr = 'https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=' + encodeURIComponent(url);
+
+      $('qrBox').classList.add('ready');
+      $('qrBox').innerHTML =
+        '<img src="'+qr+'" alt="QR code">' +
+        '<div><h3>Scanner pour répondre</h3>' +
+        '<p>Tout le groupe scanne ce QR code depuis son téléphone.</p>' +
+        '<div class="link-box">'+escapeHtml(url)+'</div>' +
+        '<button class="btn secondary" id="copyLinkBtn" type="button">Copier le lien</button></div>';
+
+      $('copyLinkBtn').addEventListener('click', async function(){
+        try { await navigator.clipboard.writeText(url); this.textContent = 'Lien copié'; }
+        catch(e){ alert(url); }
+      });
+
+      setStatus('Audit lancé. Les réponses arriveront dans LINKEDIN_REPONSES et dans l’écran Résultats.');
+    }catch(err){
+      setStatus('Erreur création QR/audit : ' + err.message, true);
+    }
   }
 
   function getScore(){
     let total = 0;
     let answered = 0;
+    const scores = {};
+
     document.querySelectorAll('.question[data-question]').forEach(q=>{
       const selected = q.querySelector('.choice.selected');
+      const key = q.dataset.question;
       if(selected){
-        total += Number(selected.dataset.value);
+        const value = Number(selected.dataset.value);
+        total += value;
         answered += 1;
+        scores[key] = value;
       }
     });
-    return {total, answered};
+
+    return {total, answered, scores};
   }
 
   function getActions(){
@@ -866,44 +989,106 @@ th{
     document.querySelectorAll('.action-choice').forEach(b=>b.classList.remove('selected'));
   }
 
-  function saveResponses(){
-    localStorage.setItem('hop_linkedin_maquette_responses', JSON.stringify(state.responses));
+  async function sendResponse(){
+    const score = getScore();
+
+    if(score.answered < 4){
+      $('formMsg').textContent = 'Il faut répondre aux 4 évaluations avant d’envoyer.';
+      $('formMsg').style.color = '#dc2626';
+      return;
+    }
+
+    if(!state.auditId){
+      $('formMsg').textContent = 'Audit introuvable. Re-scanne le QR code ou relance l’audit.';
+      $('formMsg').style.color = '#dc2626';
+      return;
+    }
+
+    $('sendBtn').disabled = true;
+    $('formMsg').textContent = 'Envoi en cours...';
+    $('formMsg').style.color = '#66758d';
+
+    try{
+      const res = await api('save_response', {
+        audit_id: state.auditId,
+        profile_name: state.profileName,
+        profile_job: state.profileJob,
+        participant: $('participantName').value.trim() || 'Anonyme',
+        titre_score: score.scores.titre || 0,
+        photo_score: score.scores.photo || 0,
+        preuve_score: score.scores.preuve || 0,
+        recommandation_score: score.scores.recommandation || 0,
+        actions_entraide: getActions().join(', '),
+        fonctionne: selectValue('rassureSelect','rassure'),
+        frein: selectValue('bloqueSelect','bloque'),
+        idee_post: selectValue('ideePostSelect','ideePost'),
+        action_prioritaire: selectValue('actionSelect','action'),
+        user_agent: navigator.userAgent
+      });
+
+      if(!res.ok) throw new Error(res.error || 'Erreur envoi');
+
+      $('formMsg').textContent = 'Avis envoyé. Merci !';
+      $('formMsg').style.color = '#16a34a';
+      clearForm();
+    }catch(err){
+      $('formMsg').textContent = 'Erreur : ' + err.message;
+      $('formMsg').style.color = '#dc2626';
+    }finally{
+      $('sendBtn').disabled = false;
+    }
   }
 
-  function renderResults(){
-    const count = state.responses.length;
-    const avg = count ? state.responses.reduce((s,r)=>s+r.score,0)/count : 0;
-    const help = state.responses.reduce((s,r)=>s+r.actions.length,0);
+  async function loadResults(){
+    if(!state.auditId){
+      renderResults({count:0, average_20:0, help_actions_count:0, responses:[]});
+      return;
+    }
 
-    $('countResult').textContent = count;
-    $('avgResult').textContent = avg.toFixed(1);
-    $('helpResult').textContent = help;
+    try{
+      const res = await api('get_results', { audit_id: state.auditId });
+      if(!res.ok) throw new Error(res.error || 'Erreur résultats');
+      state.responses = res.responses || [];
+      renderResults(res);
+    }catch(err){
+      $('responsesBody').innerHTML = '<tr><td colspan="7">Erreur résultats : '+escapeHtml(err.message)+'</td></tr>';
+    }
+  }
+
+  function renderResults(res){
+    const responses = res.responses || [];
+    $('countResult').textContent = res.count || 0;
+    $('avgResult').textContent = Number(res.average_20 || 0).toFixed(1);
+    $('helpResult').textContent = res.help_actions_count || 0;
     $('profileResult').textContent = state.profileName ? 'OK' : '—';
 
     const body = $('responsesBody');
     body.innerHTML = '';
-    if(!count){
+
+    if(!responses.length){
       body.innerHTML = '<tr><td colspan="7">Aucune réponse pour le moment.</td></tr>';
       return;
     }
 
-    state.responses.forEach(r=>{
+    responses.forEach(r=>{
       const tr = document.createElement('tr');
       tr.innerHTML =
-        '<td>'+escapeHtml(r.participant)+'</td>' +
-        '<td><strong>'+r.score.toFixed(1)+'/20</strong></td>' +
-        '<td>'+escapeHtml(r.actions.join(', '))+'</td>' +
-        '<td>'+escapeHtml(r.rassure)+'</td>' +
-        '<td>'+escapeHtml(r.bloque)+'</td>' +
-        '<td>'+escapeHtml(r.ideePost)+'</td>' +
-        '<td>'+escapeHtml(r.action)+'</td>';
+        '<td>'+escapeHtml(r.participant || 'Anonyme')+'</td>' +
+        '<td><strong>'+Number(r.score_total_20 || 0).toFixed(1)+'/20</strong></td>' +
+        '<td>'+escapeHtml(r.actions_entraide)+'</td>' +
+        '<td>'+escapeHtml(r.fonctionne)+'</td>' +
+        '<td>'+escapeHtml(r.frein)+'</td>' +
+        '<td>'+escapeHtml(r.idee_post)+'</td>' +
+        '<td>'+escapeHtml(r.action_prioritaire)+'</td>';
       body.appendChild(tr);
     });
   }
 
   function buildSummary(){
-    const count = state.responses.length;
-    const avg = count ? state.responses.reduce((s,r)=>s+r.score,0)/count : 0;
+    const responses = state.responses || [];
+    const count = responses.length;
+    const avg = count ? responses.reduce((s,r)=>s+Number(r.score_total_20 || 0),0)/count : 0;
+
     const lines = [
       'Boost LinkedIn collectif — HOP! Blanquefort',
       'Profil audité : ' + (state.profileName || '—') + ' — ' + (state.profileJob || ''),
@@ -912,21 +1097,32 @@ th{
       '',
       'Ce qui fonctionne déjà :'
     ];
-    state.responses.forEach(r=>{ if(r.rassure) lines.push('- ' + r.rassure); });
+
+    responses.forEach(r=>{ if(r.fonctionne) lines.push('- ' + r.fonctionne); });
     lines.push('', 'Freins ou manques :');
-    state.responses.forEach(r=>{ if(r.bloque) lines.push('- ' + r.bloque); });
+    responses.forEach(r=>{ if(r.frein) lines.push('- ' + r.frein); });
     lines.push('', 'Idées de posts :');
-    state.responses.forEach(r=>{ if(r.ideePost) lines.push('- ' + r.ideePost); });
+    responses.forEach(r=>{ if(r.idee_post) lines.push('- ' + r.idee_post); });
     lines.push('', 'Actions prioritaires :');
-    state.responses.forEach(r=>{ if(r.action) lines.push('- ' + r.action); });
+    responses.forEach(r=>{ if(r.action_prioritaire) lines.push('- ' + r.action_prioritaire); });
+
     return lines.join('\n');
   }
 
   function exportCsv(){
     const header = ['profil','metier','participant','score','entraide','fonctionne','frein','idee_post','priorite'];
-    const rows = state.responses.map(r => [
-      state.profileName,state.profileJob,r.participant,r.score,r.actions.join(', '),r.rassure,r.bloque,r.ideePost,r.action
+    const rows = (state.responses || []).map(r => [
+      state.profileName,
+      state.profileJob,
+      r.participant,
+      r.score_total_20,
+      r.actions_entraide,
+      r.fonctionne,
+      r.frein,
+      r.idee_post,
+      r.action_prioritaire
     ]);
+
     const csv = [header, ...rows].map(row => row.map(cell => '"' + String(cell || '').replace(/"/g,'""') + '"').join(';')).join('\n');
     const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
     const url = URL.createObjectURL(blob);
@@ -940,27 +1136,21 @@ th{
   }
 
   function resetAll(){
-    if(confirm('Remettre à zéro cette session de test ?')){
-      state.responses = [];
-      saveResponses();
-      renderResults();
+    if(confirm('Lancer un nouvel audit ? Les anciennes réponses restent dans le Sheet.')){
+      state.auditId = '';
+      localStorage.removeItem('hop_linkedin_validated_audit_id');
       resetQrOnly();
       showScreen('projection');
+      setStatus('Nouvel audit prêt. Choisis un membre puis crée le QR code.');
     }
-  }
-
-  function escapeHtml(text){
-    return String(text || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  }
-  function escapeAttr(text){
-    return String(text || '').replace(/"/g,'&quot;').replace(/</g,'&lt;');
   }
 
   document.querySelectorAll('.nav-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>showScreen(btn.dataset.screen));
   });
 
-  $('loadDemoMembersBtn').addEventListener('click', loadDemoMembers);
+  $('loadDemoMembersBtn').textContent = 'Recharger les membres';
+  $('loadDemoMembersBtn').addEventListener('click', loadMembers);
 
   $('startMemberBtn').addEventListener('click', ()=>{
     const value = $('memberSelect').value;
@@ -985,6 +1175,7 @@ th{
   $('showResultsBtn').addEventListener('click', ()=>showScreen('resultats'));
   $('backProjectionBtn').addEventListener('click', ()=>showScreen('projection'));
   $('resetBtn').addEventListener('click', resetAll);
+  $('sendBtn').addEventListener('click', sendResponse);
 
   document.querySelectorAll('.choice').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -1006,30 +1197,8 @@ th{
     });
   });
 
-  $('sendBtn').addEventListener('click', ()=>{
-    const score = getScore();
-    if(score.answered < 4){
-      $('formMsg').textContent = 'Il faut répondre aux 4 évaluations avant d’envoyer.';
-      $('formMsg').style.color = '#dc2626';
-      return;
-    }
-    state.responses.push({
-      participant: $('participantName').value.trim() || 'Anonyme',
-      score: score.total,
-      actions: getActions(),
-      rassure: selectValue('rassureSelect','rassure'),
-      bloque: selectValue('bloqueSelect','bloque'),
-      ideePost: selectValue('ideePostSelect','ideePost'),
-      action: selectValue('actionSelect','action')
-    });
-    saveResponses();
-    $('formMsg').textContent = 'Avis enregistré.';
-    $('formMsg').style.color = '#16a34a';
-    clearForm();
-    renderResults();
-  });
-
   $('copyBtn').addEventListener('click', async ()=>{
+    await loadResults();
     const text = buildSummary();
     try{
       await navigator.clipboard.writeText(text);
@@ -1039,7 +1208,10 @@ th{
     }
   });
 
-  $('csvBtn').addEventListener('click', exportCsv);
+  $('csvBtn').addEventListener('click', async ()=>{
+    await loadResults();
+    exportCsv();
+  });
 
   document.querySelectorAll('.micro').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -1060,14 +1232,18 @@ th{
 
   const params = new URLSearchParams(window.location.search);
   if(params.get('mode') === 'form'){
-    setProfile(decodeURIComponent(params.get('name') || ''), decodeURIComponent(params.get('job') || ''));
+    state.auditId = dec(params.get('audit'));
+    state.profileName = dec(params.get('name'));
+    state.profileJob = dec(params.get('job'));
+    syncProfile();
     showScreen('formulaire');
   }else{
-    loadDemoMembers();
     syncProfile();
-    renderResults();
+    renderResults({count:0, average_20:0, help_actions_count:0, responses:[]});
+    loadMembers();
   }
 })();
 </script>
+
 </body>
 </html>
